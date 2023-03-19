@@ -4,6 +4,9 @@ package org.drdeesw.commons.dto.base;
 import java.beans.Transient;
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 
@@ -13,10 +16,12 @@ import javax.persistence.MappedSuperclass;
  * @param <ID>
  */
 @MappedSuperclass
+@Access(value = AccessType.FIELD)
 public abstract class AbstractNamedObject<ID extends Serializable> extends
     AbstractUniqueObject<ID> implements Comparable<NamedObject>, NamedObject
 {
   private static final long serialVersionUID = -6603247573392458671L;
+  @Column(name="name")
   private String            name;
 
 

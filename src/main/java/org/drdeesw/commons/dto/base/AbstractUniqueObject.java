@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,10 +24,14 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @MappedSuperclass
-@Access(value = AccessType.PROPERTY)
+@Access(value = AccessType.FIELD)
 public abstract class AbstractUniqueObject<ID extends Serializable> implements UniqueObject<ID>
 {
   private static final long serialVersionUID = 3882181757154157592L;
+  @Id
+  @Column(name="id")
+  @GenericGenerator(name = "native", strategy = "native")
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   private ID                id;
 
   /**
@@ -118,11 +123,7 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
    * 
    * @return the unique id of the object.
    */
-  @Id
   @Override
-  //@Column(name="id")
-  @GenericGenerator(name = "native", strategy = "native")
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   public ID getId()
   {
     return this.id;

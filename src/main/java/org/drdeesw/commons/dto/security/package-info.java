@@ -2,4 +2,4 @@
  * @author gary_kephart
  *
  */
-package org.drdeesw.reactraxboot.dto.security;
+package org.drdeesw.commons.dto.security;

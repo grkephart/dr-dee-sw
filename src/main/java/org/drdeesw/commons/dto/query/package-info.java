@@ -2,4 +2,4 @@
  * @author gary_kephart
  *
  */
-package org.drdeesw.reactraxboot.dto.query;
+package org.drdeesw.commons.dto.query;

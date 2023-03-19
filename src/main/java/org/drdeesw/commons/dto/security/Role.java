@@ -3,10 +3,12 @@ package org.drdeesw.commons.dto.security;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.drdeesw.commons.dto.base.AbstractNamedObject;
 
@@ -19,18 +21,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author gary_kephart
  *
  */
-@Entity
-@Table(schema = "reactrax", name = "groups")
-public class Role extends AbstractNamedObject<Long>
+@MappedSuperclass
+@AttributeOverride(name = "name", column = @Column(name="group_name"))
+@Access(AccessType.FIELD)
+public class Role<UR extends UserRole<?,?>> extends AbstractNamedObject<Long>
 {
   private static final long serialVersionUID = 1L;
-  private Set<UserRole>     userRoles;
+  @OneToMany(mappedBy = "role")
+  private Set<UR>     userRoles;
 
   /* (non-Javadoc)
    * @see org.drdeesw.reactrax.dto.general.AbstractRenameableObject#getName()
    */
   @Override
-  @Column(name = "group_name")
   public String getName()
   {
     return super.getName();
@@ -41,8 +44,7 @@ public class Role extends AbstractNamedObject<Long>
    * @return the userRoles
    */
   @JsonIgnore
-  @OneToMany(mappedBy = "role")
-  public Set<UserRole> getUserRoles()
+  public Set<UR> getUserRoles()
   {
     return userRoles;
   }
@@ -52,7 +54,7 @@ public class Role extends AbstractNamedObject<Long>
    * @param userRoles the userRoles to set
    */
   public void setUserRoles(
-    Set<UserRole> userRoles)
+    Set<UR> userRoles)
   {
     this.userRoles = userRoles;
   }

@@ -4,11 +4,11 @@
 package org.drdeesw.commons.dto.security;
 
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
 
@@ -19,13 +19,17 @@ import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
  * @author gkephart
  *
  */
-@Entity
-@Table(name = "group_members")
-public class UserRole extends AbstractLongUniqueObject
+@Access(AccessType.FIELD)
+public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLongUniqueObject
 {
   private static final long serialVersionUID = 1L;
-  private Role   role;
-  private User   user;
+  @ManyToOne
+  @JoinColumn(name = "group_id")
+  private R   role;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private U   user;
+  @Column(name = "username")
   private String username;
 
   /**
@@ -40,9 +44,7 @@ public class UserRole extends AbstractLongUniqueObject
   /**
    * @return the role
    */
-  @ManyToOne
-  @JoinColumn(name = "group_id")
-  public Role getRole()
+  public R getRole()
   {
     return role;
   }
@@ -51,9 +53,7 @@ public class UserRole extends AbstractLongUniqueObject
   /**
    * @return the user
    */
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  public User getUser()
+  public U getUser()
   {
     return user;
   }
@@ -62,7 +62,6 @@ public class UserRole extends AbstractLongUniqueObject
   /**
    * @return the username
    */
-  @Column(name = "username")
   public String getUsername()
   {
     return username;
@@ -73,7 +72,7 @@ public class UserRole extends AbstractLongUniqueObject
    * @param role the role to set
    */
   public void setRole(
-    Role role)
+    R role)
   {
     this.role = role;
   }
@@ -83,7 +82,7 @@ public class UserRole extends AbstractLongUniqueObject
    * @param user the user to set
    */
   public void setUser(
-    User user)
+    U user)
   {
     this.user = user;
   }

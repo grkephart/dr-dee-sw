@@ -7,7 +7,7 @@ package org.drdeesw.commons.dto.base;
  * @author gary_kephart
  *
  */
-public class AbstractLongRenameableObject extends AbstractNamedObject<Long>
+public class AbstractLongNamedObject extends AbstractNamedObject<Long>
     implements LongUniqueObject
 {
   private static final long serialVersionUID = 6902141588206147324L;
@@ -15,7 +15,7 @@ public class AbstractLongRenameableObject extends AbstractNamedObject<Long>
   /**
    * 
    */
-  public AbstractLongRenameableObject()
+  public AbstractLongNamedObject()
   {
     super();
   }
@@ -24,7 +24,7 @@ public class AbstractLongRenameableObject extends AbstractNamedObject<Long>
   /**
    * @param that
    */
-  public AbstractLongRenameableObject(AbstractNamedObject<Long> that)
+  public AbstractLongNamedObject(AbstractNamedObject<Long> that)
   {
     super(that);
   }
@@ -34,7 +34,7 @@ public class AbstractLongRenameableObject extends AbstractNamedObject<Long>
    * @param id
    * @param name
    */
-  public AbstractLongRenameableObject(Long id, String name)
+  public AbstractLongNamedObject(Long id, String name)
   {
     super(id, name);
   }
@@ -43,7 +43,7 @@ public class AbstractLongRenameableObject extends AbstractNamedObject<Long>
   /**
    * @param id
    */
-  public AbstractLongRenameableObject(Long id)
+  public AbstractLongNamedObject(Long id)
   {
     super(id);
   }
@@ -52,7 +52,7 @@ public class AbstractLongRenameableObject extends AbstractNamedObject<Long>
   /**
    * @param name
    */
-  public AbstractLongRenameableObject(String name)
+  public AbstractLongNamedObject(String name)
   {
     super(name);
   }

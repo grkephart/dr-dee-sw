@@ -6,12 +6,13 @@ package org.drdeesw.commons.dto.security;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
 import org.hibernate.annotations.Formula;
@@ -24,18 +25,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @author gary_kephart
  *
- */
-@Entity
-@Table(schema = "reactrax", name = "users")
-@AttributeOverride(name = "id", column = @Column(name = "user_id"))
-public class User extends AbstractLongUniqueObject
+ */@AttributeOverride(name = "id", column = @Column(name="user_id"))
+
+@MappedSuperclass
+@Access(AccessType.FIELD)
+public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
 {
   private static final long serialVersionUID = 1L;
+  @Column(name = "enabled")
   private boolean           enabled;
+  @Column(name = "name")
   private String            name;
+  @Formula("(SELECT GROUP_CONCAT(gm.group_name) FROM group_members_v gm WHERE gm.user_id = user_id)")
   private String            roleNames;
+  @Column(name = "username")
   private String            username;
-  private Set<UserRole>     userRoles;
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  private Set<UR>     userRoles;
 
   /**
    * Hibernate
@@ -70,7 +76,6 @@ public class User extends AbstractLongUniqueObject
    * @param name
    * @param username
    * @param enabled
-   * @param status   TODO
    */
   public User(String name, String username, boolean enabled)
   {
@@ -81,7 +86,6 @@ public class User extends AbstractLongUniqueObject
 
 
   @Override
-  @Column(name = "user_id")
   public Long getId()
   {
     return super.getId();
@@ -91,7 +95,6 @@ public class User extends AbstractLongUniqueObject
   /**
    * @return the name
    */
-  @Column(name = "name")
   public String getName()
   {
     return name;
@@ -101,7 +104,6 @@ public class User extends AbstractLongUniqueObject
   /**
    * @return the roleNames
    */
-  @Formula("(SELECT GROUP_CONCAT(gm.group_name) FROM group_members_v gm WHERE gm.user_id = user_id)")
   public String getRoleNames()
   {
     return roleNames;
@@ -113,7 +115,6 @@ public class User extends AbstractLongUniqueObject
    * 
    * @return
    */
-  @Column(name = "username")
   public String getUsername()
   {
     return username;
@@ -124,8 +125,7 @@ public class User extends AbstractLongUniqueObject
    * @return the userRoles
    */
   @JsonIgnore
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-  public Set<UserRole> getUserRoles()
+  public Set<UR> getUserRoles()
   {
     return userRoles;
   }
@@ -134,7 +134,6 @@ public class User extends AbstractLongUniqueObject
   /**
    * @return the enabled
    */
-  @Column(name = "enabled")
   public boolean isEnabled()
   {
     return enabled;
@@ -178,7 +177,7 @@ public class User extends AbstractLongUniqueObject
   /**
    * @param userRoles the userRoles to set
    */
-  public void setUserRoles(Set<UserRole> userRoles)
+  public void setUserRoles(Set<UR> userRoles)
   {
     this.userRoles = userRoles;
   }
