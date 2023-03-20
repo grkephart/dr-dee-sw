@@ -1,4 +1,4 @@
-package org.drdeesw.commons.dto.query;
+package org.drdeesw.commons.dto.queries;
 
 public enum Match {
   MATCH_ALL("AND"), //

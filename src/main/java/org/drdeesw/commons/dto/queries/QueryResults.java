@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.query;
+package org.drdeesw.commons.dto.queries;
 
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.drdeesw.commons.dto.query.datatables.DataTablesJpqlQuery;
+import org.drdeesw.commons.dto.queries.datatables.DataTablesJpqlQuery;
 
 
 /**

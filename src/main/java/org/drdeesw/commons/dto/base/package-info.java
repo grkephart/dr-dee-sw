@@ -1,4 +1,6 @@
 /**
+ * Contains many base classes.
+ * 
  * @author gary_kephart
  *
  */

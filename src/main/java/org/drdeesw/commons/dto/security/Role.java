@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
@@ -22,12 +23,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 @MappedSuperclass
-@AttributeOverride(name = "name", column = @Column(name="group_name"))
 @Access(AccessType.FIELD)
+@AttributeOverride(name = "name", column = @Column(name = "group_name"))
 public class Role<UR extends UserRole<?,?>> extends AbstractNamedObject<Long>
 {
   private static final long serialVersionUID = 1L;
-  @OneToMany(mappedBy = "role")
+  @OneToMany(mappedBy = "role", fetch=FetchType.LAZY)
   private Set<UR>     userRoles;
 
   /* (non-Javadoc)

@@ -1,10 +1,9 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.query;
+package org.drdeesw.commons.dto.queries;
 
 import org.drdeesw.commons.dto.base.DataTransferObject;
-
 
 /**
  * @author gary_kephart

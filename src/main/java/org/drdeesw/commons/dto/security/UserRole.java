@@ -9,6 +9,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
 import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
 
@@ -19,18 +20,19 @@ import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
  * @author gkephart
  *
  */
+@MappedSuperclass
 @Access(AccessType.FIELD)
 public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLongUniqueObject
 {
   private static final long serialVersionUID = 1L;
   @ManyToOne
   @JoinColumn(name = "group_id")
-  private R   role;
+  private R                 role;
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private U   user;
+  private U                 user;
   @Column(name = "username")
-  private String username;
+  private String            username;
 
   /**
    * Hibernate
@@ -38,7 +40,6 @@ public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLong
   public UserRole()
   {
   }
-
 
 
   /**

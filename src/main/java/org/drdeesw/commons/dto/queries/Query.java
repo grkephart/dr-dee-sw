@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.query;
+package org.drdeesw.commons.dto.queries;
 
 
 import java.util.ArrayList;
@@ -43,12 +43,12 @@ public class Query<T>
    */
   public Query(Class<T> clazz, Match match)
   {
-    this.alias               = DEFAULT_ALIAS;
-    this.clazz               = clazz;
-    this.conditions          = new ArrayList<Condition>();
+    this.alias = DEFAULT_ALIAS;
+    this.clazz = clazz;
+    this.conditions = new ArrayList<Condition>();
     this.mandatoryConditions = new ArrayList<Condition>();
-    this.match               = match;
-    this.orderings           = new ArrayList<>();
+    this.match = match;
+    this.orderings = new ArrayList<>();
   }
 
 
@@ -57,22 +57,14 @@ public class Query<T>
    * @param condition
    * @return
    */
-  public <Q extends Query<T>> Q add(Condition condition)
+  public <Q extends Query<T>> Q add(
+    Condition condition)
   {
     String fieldName = condition.getFieldName();
 
     if (fieldName != null)
     {
-      int index = fieldName.lastIndexOf(".");
-
-      if (index > 0)
-      {
-        String joinName  = fieldName.substring(0, index);
-        String remaining = fieldName.substring(index + 1);
-
-        condition.setFieldName(joinName + "." + remaining);
-      } else
-        condition.setFieldName(this.alias + "." + fieldName);
+      condition.setFieldName(this.alias + "." + fieldName);
     }
 
     this.conditions.add(condition);
@@ -87,7 +79,9 @@ public class Query<T>
    * @return
    * @throws ApplicationException
    */
-  public <Q extends Query<T>> Q addMandatoryCondition(String propertyName, Object value) throws Exception
+  public <Q extends Query<T>> Q addMandatoryCondition(
+    String propertyName,
+    Object value) throws Exception
   {
     if (propertyName != null && value != null)
     {
@@ -113,10 +107,12 @@ public class Query<T>
    * @param operator
    * @param value
    * @return
-   * @throws Exception
+   * @throws Exception 
    */
-  public <Q extends Query<T>> Q addMandatoryCondition(String propertyName, Operator operator, Object value)
-      throws Exception
+  public <Q extends Query<T>> Q addMandatoryCondition(
+    String propertyName,
+    Operator operator,
+    Object value) throws Exception
   {
     boolean added = addMandatoryCondition(propertyName, operator, value, false);
 
@@ -134,7 +130,11 @@ public class Query<T>
    * @param isRef
    * @return
    */
-  private boolean addMandatoryCondition(String propertyName, Operator operator, Object value, boolean isRef)
+  private boolean addMandatoryCondition(
+    String propertyName,
+    Operator operator,
+    Object value,
+    boolean isRef)
   {
     return this.mandatoryConditions.add(new Condition(propertyName, operator, value, isRef));
   }
@@ -144,7 +144,9 @@ public class Query<T>
    * @param name
    * @param ascending
    */
-  public void addOrdering(String name, boolean ascending)
+  public void addOrdering(
+    String name,
+    boolean ascending)
   {
     this.orderings.add(new Ordering(name, ascending));
 
@@ -158,7 +160,7 @@ public class Query<T>
   @SuppressWarnings("unchecked")
   protected <Q extends Query<T>> Q cast()
   {
-    return (Q) this;
+    return (Q)this;
   }
 
 
@@ -176,7 +178,9 @@ public class Query<T>
    * @param string2
    * @return
    */
-  public <Q extends Query<T>> Q equals(String fieldName, Object value)
+  public <Q extends Query<T>> Q equals(
+    String fieldName,
+    Object value)
   {
     add(Condition.equals(fieldName, value));
 
@@ -211,6 +215,8 @@ public class Query<T>
   }
 
 
+
+
   /**
    * @return the mandatoryConditions
    */
@@ -242,7 +248,8 @@ public class Query<T>
    * @param defaultValue
    * @return
    */
-  public int getMaxResults(int defaultValue)
+  public int getMaxResults(
+    int defaultValue)
   {
     return this.maxResults == null ? defaultValue : this.maxResults;
   }
@@ -270,7 +277,8 @@ public class Query<T>
    * @param defValue
    * @return
    */
-  public int getStart(int defValue)
+  public int getStart(
+    int defValue)
   {
     return this.start == null ? defValue : this.start;
   }
@@ -290,7 +298,9 @@ public class Query<T>
    * @param string2
    * @return
    */
-  public <Q extends Query<T>> Q iequals(String fieldName, Object value)
+  public <Q extends Query<T>> Q iequals(
+    String fieldName,
+    Object value)
   {
     add(Condition.iequals(fieldName, value));
 
@@ -303,7 +313,9 @@ public class Query<T>
    * @param string2
    * @return
    */
-  public <Q extends Query<T>> Q ilike(String fieldName, String value)
+  public <Q extends Query<T>> Q ilike(
+    String fieldName,
+    String value)
   {
     add(Condition.ilike(fieldName, value));
 
@@ -325,7 +337,8 @@ public class Query<T>
    * @param string2
    * @return
    */
-  public <Q extends Query<T>> Q isNull(String fieldName)
+  public <Q extends Query<T>> Q isNull(
+    String fieldName)
   {
     add(Condition.isNull(fieldName));
 
@@ -347,7 +360,9 @@ public class Query<T>
    * @param string2
    * @return
    */
-  public <Q extends Query<T>> Q like(String fieldName, String value)
+  public <Q extends Query<T>> Q like(
+    String fieldName,
+    String value)
   {
     add(Condition.like(fieldName, value));
 
@@ -355,7 +370,8 @@ public class Query<T>
   }
 
 
-  public <Q extends Query<T>> Q or(Condition... conditions)
+  public <Q extends Query<T>> Q or(
+    Condition... conditions)
   {
     add(Condition.or(conditions));
 
@@ -366,7 +382,8 @@ public class Query<T>
   /**
    * @param alias the alias to set
    */
-  public <Q extends Query<T>> Q setAlias(String alias)
+  public <Q extends Query<T>> Q setAlias(
+    String alias)
   {
     this.alias = alias;
 
@@ -377,7 +394,8 @@ public class Query<T>
   /**
    * @param caseInsensitive the caseInsensitive to set
    */
-  public void setCaseInsensitive(boolean caseInsensitive)
+  public void setCaseInsensitive(
+    boolean caseInsensitive)
   {
     this.caseInsensitive = caseInsensitive;
   }
@@ -386,7 +404,8 @@ public class Query<T>
   /**
    * @param match the match to set
    */
-  public void setMatch(Match match)
+  public void setMatch(
+    Match match)
   {
     this.match = match;
   }
@@ -395,7 +414,8 @@ public class Query<T>
   /**
    * @param length
    */
-  public <Q extends Query<T>> Q setMaxResults(Integer maxResults)
+  public <Q extends Query<T>> Q setMaxResults(
+    Integer maxResults)
   {
     this.maxResults = maxResults;
 
@@ -406,7 +426,8 @@ public class Query<T>
   /**
    * @param performCount
    */
-  public <Q extends Query<T>> Q setPerformCount(Boolean performCount)
+  public <Q extends Query<T>> Q setPerformCount(
+    Boolean performCount)
   {
     this.performCount = performCount;
 
@@ -417,7 +438,8 @@ public class Query<T>
   /**
    * @param start
    */
-  public <Q extends Query<T>> Q setStart(Integer start)
+  public <Q extends Query<T>> Q setStart(
+    Integer start)
   {
     this.start = start;
 

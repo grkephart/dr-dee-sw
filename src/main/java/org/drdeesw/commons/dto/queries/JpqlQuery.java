@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.query;
+package org.drdeesw.commons.dto.queries;
 
 
 import java.text.DateFormat;
@@ -61,7 +61,9 @@ public class JpqlQuery<T> extends Query<T>
    * @param value3
    * @return
    */
-  private String formatValue(Object value, Operator operator)
+  private String formatValue(
+    Object value,
+    Operator operator)
   {
     String formattedValue;
 
@@ -74,8 +76,9 @@ public class JpqlQuery<T> extends Query<T>
 
       if (operator.isCaseInsensitive())
         formattedValue = LOWER_FUNC + "(" + formattedValue + ")";
-    } else if (value instanceof Date)
-      formattedValue = this.df.format((Date) value);
+    }
+    else if (value instanceof Date)
+      formattedValue = this.df.format((Date)value);
     else
       formattedValue = String.valueOf(value);
 
@@ -98,9 +101,7 @@ public class JpqlQuery<T> extends Query<T>
 
       for (Ordering ordering : super.getOrderings())
       {
-        String name = ordering.getName();
-
-        name = getAlias() + "." + name;
+        String name = getAlias() + "." + ordering.getName();
 
         buffer.append(" ");
 
@@ -180,7 +181,8 @@ public class JpqlQuery<T> extends Query<T>
   /**
    * @param df the df to set
    */
-  public void setDf(DateFormat df)
+  public void setDf(
+    DateFormat df)
   {
     this.df = df;
   }
@@ -192,7 +194,7 @@ public class JpqlQuery<T> extends Query<T>
   public String toCountJpql()
   {
     return "SELECT COUNT(" + getAlias()//
-        + ") FROM " + super.getClassSimpleName() + " " + getAlias() + getWhereClause();
+           + ") FROM " + super.getClassSimpleName() + " " + getAlias() + " " + getWhereClause();
   }
 
 
@@ -202,7 +204,8 @@ public class JpqlQuery<T> extends Query<T>
   public String toJpql()
   {
     return "SELECT " + getAlias()//
-        + " FROM " + super.getClassSimpleName() + " " + getAlias() + getWhereClause() + getOrderClause();
+           + " FROM " + super.getClassSimpleName() + " " + getAlias() + " " + getWhereClause()
+           + getOrderClause();
   }
 
 
@@ -210,47 +213,48 @@ public class JpqlQuery<T> extends Query<T>
    * @param condition
    * @return
    */
-  public String toJpql(Condition condition)
+  public String toJpql(
+    Condition condition)
   {
-    String   jpql            = null;
-    String   fieldName       = condition.getFieldName();
-    Operator operator        = condition.getOperator();
-    Object   value           = condition.getValue();
-    Object   value2          = condition.getValue2();
-    boolean  caseInsensitive = operator.isCaseInsensitive();
+    String jpql = null;
+    String fieldName = condition.getFieldName();
+    Operator operator = condition.getOperator();
+    Object value = condition.getValue();
+    Object value2 = condition.getValue2();
+    boolean caseInsensitive = operator.isCaseInsensitive();
 
     switch (operator.getType())
     {
-    case NO_VALUES:
-      jpql = fieldName + " " + operator.getSql();
-      break;
-    case UNARY:
-      if (caseInsensitive)
-        fieldName = LOWER_FUNC + "(" + fieldName + ")";
+      case NO_VALUES:
+        jpql = fieldName + " " + operator.getSql();
+        break;
+      case UNARY:
+        if (caseInsensitive)
+          fieldName = LOWER_FUNC + "(" + fieldName + ")";
 
-      jpql = fieldName + " " + operator.getSql() + " " + formatValue(value, operator);
-      break;
-    case BINARY:
-      jpql = fieldName + " " + operator.getSql() + " " + formatValue(value, operator) + " AND "
-          + formatValue(value2, operator);
-      break;
-    case MULTI:
-      boolean first = true;
+        jpql = fieldName + " " + operator.getSql() + " " + formatValue(value, operator);
+        break;
+      case BINARY:
+        jpql = fieldName + " " + operator.getSql() + " " + formatValue(value, operator) + " AND "
+               + formatValue(value2, operator);
+        break;
+      case MULTI:
+        boolean first = true;
 
-      jpql = "(";
+        jpql = "(";
 
-      for (Condition cond : condition.getConditions())
-      {
-        if (first)
-          first = false;
-        else
-          jpql += " " + operator.getSql() + " ";
+        for (Condition cond : condition.getConditions())
+        {
+          if (first)
+            first = false;
+          else
+            jpql += " " + operator.getSql() + " ";
 
-        jpql += toJpql(cond);
-      }
+          jpql += toJpql(cond);
+        }
 
-      jpql += ")";
-      break;
+        jpql += ")";
+        break;
     }
 
     return jpql;

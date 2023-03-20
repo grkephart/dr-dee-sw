@@ -1,4 +1,6 @@
 /**
+ * Contains the base classes for use with security.
+ * 
  * @author gary_kephart
  *
  */

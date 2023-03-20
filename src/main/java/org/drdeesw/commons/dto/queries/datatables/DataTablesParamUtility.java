@@ -1,4 +1,4 @@
-package org.drdeesw.commons.dto.query.datatables;
+package org.drdeesw.commons.dto.queries.datatables;
 
 
 import java.io.Serializable;

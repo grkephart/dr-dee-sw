@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
@@ -25,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @author gary_kephart
  *
- */@AttributeOverride(name = "id", column = @Column(name="user_id"))
-
+ */
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
@@ -36,11 +34,10 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
   private boolean           enabled;
   @Column(name = "name")
   private String            name;
-  @Formula("(SELECT GROUP_CONCAT(gm.group_name) FROM group_members_v gm WHERE gm.user_id = user_id)")
   private String            roleNames;
   @Column(name = "username")
   private String            username;
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<UR>     userRoles;
 
   /**
@@ -66,7 +63,7 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
   public User(String name, String username)
   {
     this.username = username;
-    this.name     = name;
+    this.name = name;
   }
 
 
@@ -79,9 +76,9 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
    */
   public User(String name, String username, boolean enabled)
   {
-    this.enabled  = enabled;
+    this.enabled = enabled;
     this.username = username;
-    this.name     = name;
+    this.name = name;
   }
 
 
@@ -104,6 +101,8 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
   /**
    * @return the roleNames
    */
+  @Access(AccessType.PROPERTY)
+  @Formula("(SELECT GROUP_CONCAT(gm.group_name) FROM group_members_v gm WHERE gm.user_id = user_id)")
   public String getRoleNames()
   {
     return roleNames;
@@ -112,7 +111,6 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
 
   /**
    * The email address is the username
-   * 
    * @return
    */
   public String getUsername()
@@ -143,17 +141,18 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
   /**
    * @param enabled the enabled to set
    */
-  public void setEnabled(boolean enabled)
+  public void setEnabled(
+    boolean enabled)
   {
     this.enabled = enabled;
   }
 
 
-
   /**
-   * @param name
+   * @param name the name to set
    */
-  public void setName(String name)
+  public void setName(
+    String name)
   {
     this.name = name;
   }
@@ -162,13 +161,15 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
   /**
    * @param roleNames the roleNames to set
    */
-  public void setRoleNames(String roleNames)
+  public void setRoleNames(
+    String roleNames)
   {
     this.roleNames = roleNames;
   }
 
 
-  public void setUsername(String email)
+  public void setUsername(
+    String email)
   {
     this.username = email;
   }
@@ -177,7 +178,8 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
   /**
    * @param userRoles the userRoles to set
    */
-  public void setUserRoles(Set<UR> userRoles)
+  public void setUserRoles(
+    Set<UR> userRoles)
   {
     this.userRoles = userRoles;
   }
