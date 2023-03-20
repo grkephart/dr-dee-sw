@@ -29,9 +29,9 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
 {
   private static final long serialVersionUID = 3882181757154157592L;
   @Id
-  @Column(name="id")
   @GenericGenerator(name = "native", strategy = "native")
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+  @Column(name="id")
   private ID                id;
 
   /**

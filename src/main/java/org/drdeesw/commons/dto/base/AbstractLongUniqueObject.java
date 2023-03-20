@@ -18,6 +18,9 @@ public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long
   private static final long serialVersionUID = -9190810275366831598L;
 
 
+  /**
+   * Hibernate
+   */
   protected AbstractLongUniqueObject()
   {
   }
@@ -32,6 +35,9 @@ public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long
   }
 
 
+  /**
+   * @param id
+   */
   protected AbstractLongUniqueObject(Long id)
   {
     super(id);

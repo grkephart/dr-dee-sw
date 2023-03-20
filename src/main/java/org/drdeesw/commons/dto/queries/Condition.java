@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.query;
+package org.drdeesw.commons.dto.queries;
 
 
 import java.text.DateFormat;

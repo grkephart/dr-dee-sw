@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.query.datatables;
+package org.drdeesw.commons.dto.queries.datatables;
 
 
 import java.util.Map.Entry;
 
-import org.drdeesw.commons.dto.query.JpqlQuery;
-import org.drdeesw.commons.dto.query.Match;
+import org.drdeesw.commons.dto.queries.JpqlQuery;
+import org.drdeesw.commons.dto.queries.Match;
 import org.springframework.util.MultiValueMap;
 
 
