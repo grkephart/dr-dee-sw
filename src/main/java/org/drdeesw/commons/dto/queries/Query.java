@@ -5,6 +5,7 @@ package org.drdeesw.commons.dto.queries;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -183,6 +184,21 @@ public class Query<T>
     Object value)
   {
     add(Condition.equals(fieldName, value));
+
+    return cast();
+  }
+
+
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q in(
+    String fieldName,
+    Collection<?> value)
+  {
+    add(Condition.in(fieldName, value));
 
     return cast();
   }

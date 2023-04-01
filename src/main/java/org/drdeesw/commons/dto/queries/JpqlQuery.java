@@ -5,7 +5,10 @@ package org.drdeesw.commons.dto.queries;
 
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -67,7 +70,16 @@ public class JpqlQuery<T> extends Query<T>
   {
     String formattedValue;
 
-    if (value instanceof String)
+    if (Operator.IN.equals(operator))
+    {
+      Collection<?> collection = (Collection<?>)value;
+      List<String> strValues = new ArrayList<String>(collection.size());
+
+      collection.forEach(x -> strValues.add(formatValue(x, Operator.EQUALS)));
+
+      formattedValue = String.join(",", strValues);
+    }
+    else if (value instanceof String)
     {
       if (operator.isLike())
         formattedValue = "'%" + value + "%'";
@@ -241,19 +253,27 @@ public class JpqlQuery<T> extends Query<T>
       case MULTI:
         boolean first = true;
 
-        jpql = "(";
-
-        for (Condition cond : condition.getConditions())
+        if (Operator.IN.equals(operator))
         {
-          if (first)
-            first = false;
-          else
-            jpql += " " + operator.getSql() + " ";
-
-          jpql += toJpql(cond);
+          jpql = fieldName + " " + operator.getSql() + " (" + formatValue(value, operator) + ")";
         }
+        else
+        {
+          // AND, OR
+          jpql = "(";
 
-        jpql += ")";
+          for (Condition cond : condition.getConditions())
+          {
+            if (first)
+              first = false;
+            else
+              jpql += " " + operator.getSql() + " ";
+
+            jpql += toJpql(cond);
+          }
+
+          jpql += ")";
+        }
         break;
     }
 

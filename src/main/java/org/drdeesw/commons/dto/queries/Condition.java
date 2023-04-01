@@ -5,6 +5,7 @@ package org.drdeesw.commons.dto.queries;
 
 
 import java.text.DateFormat;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -19,6 +20,14 @@ public class Condition
     Object value)
   {
     return new Condition(fieldName, Operator.EQUALS, value);
+  }
+
+
+  public static Condition in(
+    String fieldName,
+    Collection<?> value)
+  {
+    return new Condition(fieldName, Operator.IN, value);
   }
 
 

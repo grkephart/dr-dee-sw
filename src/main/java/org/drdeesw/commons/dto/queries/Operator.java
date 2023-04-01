@@ -29,9 +29,10 @@ public class Operator
   public static final Operator   NOT_EQUALS  = new Operator("<>", Type.UNARY, "[ne]");
   public static final Operator   AND         = new Operator("AND", Type.MULTI, "[and]");
   public static final Operator   OR          = new Operator("OR", Type.MULTI, "[or]");
+  public static final Operator   IN          = new Operator("IN", Type.MULTI, "[in]");
   public static final Operator[] ALL         = { BETWEEN, EQUALS, GE, GT, IEQUALS, ILIKE,
                                                  IS_NOT_NULL, IS_NULL, LE, LIKE, LT, NOT_EQUALS,
-                                                 AND, OR };
+                                                 AND, OR, IN };
   private boolean                caseInsensitive;
   private boolean                like;
   private String                 lhs;
