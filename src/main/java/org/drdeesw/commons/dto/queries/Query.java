@@ -154,6 +154,15 @@ public class Query<T>
   }
 
 
+  public <Q extends Query<T>> Q and(
+    Condition... conditions)
+  {
+    add(Condition.and(conditions));
+
+    return cast();
+  }
+
+
   /**
    * @param <Q>
    * @return
@@ -190,21 +199,6 @@ public class Query<T>
 
 
   /**
-   * @param string
-   * @param string2
-   * @return
-   */
-  public <Q extends Query<T>> Q in(
-    String fieldName,
-    Collection<?> value)
-  {
-    add(Condition.in(fieldName, value));
-
-    return cast();
-  }
-
-
-  /**
    * @return the alias
    */
   public String getAlias()
@@ -229,8 +223,6 @@ public class Query<T>
   {
     return this.conditions;
   }
-
-
 
 
   /**
@@ -334,6 +326,21 @@ public class Query<T>
     String value)
   {
     add(Condition.ilike(fieldName, value));
+
+    return cast();
+  }
+
+
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q in(
+    String fieldName,
+    Collection<?> value)
+  {
+    add(Condition.in(fieldName, value));
 
     return cast();
   }

@@ -15,6 +15,22 @@ import java.util.Date;
  */
 public class Condition
 {
+  /**
+   * @param conditions
+   * @return
+   */
+  public static Condition and(
+    Condition[] conditions)
+  {
+    return new Condition(conditions, Operator.AND);
+  }
+
+
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
   public static Condition equals(
     String fieldName,
     Object value)
@@ -23,6 +39,37 @@ public class Condition
   }
 
 
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
+  public static Condition iequals(
+    String fieldName,
+    Object value)
+  {
+    return new Condition(fieldName, Operator.IEQUALS, value);
+  }
+
+
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
+  public static Condition ilike(
+    String fieldName,
+    String value)
+  {
+    return new Condition(fieldName, Operator.ILIKE, value);
+  }
+
+
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
   public static Condition in(
     String fieldName,
     Collection<?> value)
@@ -31,22 +78,10 @@ public class Condition
   }
 
 
-  static Condition iequals(
-    String fieldName,
-    Object value)
-  {
-    return new Condition(fieldName, Operator.IEQUALS, value);
-  }
-
-
-  static Condition ilike(
-    String fieldName,
-    String value)
-  {
-    return new Condition(fieldName, Operator.ILIKE, value);
-  }
-
-
+  /**
+   * @param fieldName
+   * @return
+   */
   public static Condition isNull(
     String fieldName)
   {
@@ -54,6 +89,11 @@ public class Condition
   }
 
 
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
   static Condition like(
     String fieldName,
     String value)
@@ -62,6 +102,10 @@ public class Condition
   }
 
 
+  /**
+   * @param conditions
+   * @return
+   */
   public static Condition or(
     Condition[] conditions)
   {
@@ -125,7 +169,7 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = value;
+    this.value = sqlSafeString(value);
   }
 
 
@@ -139,7 +183,7 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = value;
+    this.value = sqlSafeString(value);
   }
 
 
@@ -154,8 +198,8 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = value;
-    this.value2 = value2;
+    this.value = sqlSafeString(value);
+    this.value2 = sqlSafeString(value2);
   }
 
 
@@ -240,7 +284,7 @@ public class Condition
   public void setValue(
     Object value)
   {
-    this.value = value;
+    this.value = sqlSafeString(value);
   }
 
 
@@ -250,6 +294,26 @@ public class Condition
   public void setValue2(
     Object value2)
   {
-    this.value2 = value2;
+    this.value2 = sqlSafeString(value2);
+  }
+
+
+  /**
+   * Primarily for escaping single quotes in a string value.
+   * 
+   * @param value
+   * @return
+   */
+  private Object sqlSafeString(
+    Object value)
+  {
+    if (value instanceof String)
+    {
+      String str = (String)value;
+
+      return str.replace("'", "\\'");
+    }
+    else
+      return value;
   }
 }

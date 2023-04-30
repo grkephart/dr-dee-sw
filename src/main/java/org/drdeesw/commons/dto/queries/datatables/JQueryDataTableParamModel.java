@@ -142,7 +142,7 @@ public class JQueryDataTableParamModel implements Serializable
 
 
   /**
-   * Search value to apply to this specific column.
+   * Comma-separated search values to apply to this specific column.
    * 
    * @return the columnSearchValues
    */

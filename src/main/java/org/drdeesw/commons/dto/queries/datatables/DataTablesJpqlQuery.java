@@ -4,8 +4,11 @@
 package org.drdeesw.commons.dto.queries.datatables;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
+import org.drdeesw.commons.dto.queries.Condition;
 import org.drdeesw.commons.dto.queries.JpqlQuery;
 import org.drdeesw.commons.dto.queries.Match;
 import org.springframework.util.MultiValueMap;
@@ -18,18 +21,6 @@ import org.springframework.util.MultiValueMap;
 public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
 {
   private Integer draw;
-
-  /**
-   * @param clazz
-   * @param allRequestParams
-   * @throws Exception
-   */
-  public DataTablesJpqlQuery(Class<T> clazz, MultiValueMap<String, String> allRequestParams)
-      throws Exception
-  {
-    this(clazz, DataTablesParamUtility.getParamModel(allRequestParams));
-  }
-
 
   /**
    * @param clazz
@@ -61,7 +52,7 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
     if (searchValue != null && searchValue.length() > 0)
     {
       searchValue = searchValue.replace("'", "''");
-      
+
       for (int x = 0; x < columnNames.length; x++)
       {
         if (columnSearchable[x])
@@ -76,29 +67,38 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
       }
     }
 
+    // All of the columnSearchValues need to be grouped together as part of 
+    // an AND condition, but separate from the global searchValue, with which
+    // they will be OR'd.
     if (columnSearchValues != null && columnSearchValues.length > 0)
     {
-      super.setMatch(Match.MATCH_ALL);
-      
+      List<Condition> columnSearchConditions = new ArrayList<>();
+
       for (int x = 0; x < columnSearchValues.length; x++)
       {
         if (columnSearchable[x])
         {
           String columnSearchValue = columnSearchValues[x];
-          String trimmedValue = columnSearchValue == null ? null : columnSearchValue.trim().replace("'", "''");
+          String trimmedValue = columnSearchValue == null ? null
+                                                          : columnSearchValue.trim().replace("'",
+                                                            "''");
 
           if (trimmedValue != null && trimmedValue.length() > 0)
           {
             String columnName = columnData[x];
-            
+
             if (Boolean.TRUE.equals(searchRegex))
-              ilike(columnName, trimmedValue);
+              columnSearchConditions.add(Condition.ilike(columnName, trimmedValue));
             else
-              iequals(columnName, trimmedValue);
+              columnSearchConditions.add(Condition.iequals(columnName, trimmedValue));
           }
-        }
-      }
-    }
+        } // end if columnSearchable
+      } // end loop
+
+      if (!columnSearchConditions.isEmpty())
+        and(columnSearchConditions.toArray(new Condition[0]));
+
+    } // end if columnSearchValues
 
     if (orderColumns != null && orderColumns.length > 0)
     {
@@ -123,6 +123,18 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
         addMandatoryCondition(entry.getKey(), entry.getValue());
       }
     }
+  }
+
+
+  /**
+   * @param clazz
+   * @param allRequestParams
+   * @throws Exception
+   */
+  public DataTablesJpqlQuery(Class<T> clazz, MultiValueMap<String, String> allRequestParams)
+      throws Exception
+  {
+    this(clazz, DataTablesParamUtility.getParamModel(allRequestParams));
   }
 
 
