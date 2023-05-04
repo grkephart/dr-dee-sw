@@ -40,6 +40,58 @@ public class Condition
 
 
   /**
+   * @param propertyName
+   * @param value
+   * @param isRef
+   * @return
+   */
+  public static Condition equals(
+    String propertyName,
+    Object value,
+    boolean isRef)
+  {
+    return new Condition(propertyName, Operator.EQUALS, value, isRef);
+  }
+
+
+  /**
+   * @param subquery
+   * @return
+   */
+  public static Condition exists(
+    Query<?> subquery)
+  {
+    return new Condition(Operator.EXISTS, subquery);
+  }
+
+
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
+  public static Condition ge(
+    String fieldName,
+    Object value)
+  {
+    return new Condition(fieldName, Operator.GE, value);
+  }
+
+
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
+  public static Condition gt(
+    String fieldName,
+    Object value)
+  {
+    return new Condition(fieldName, Operator.GT, value);
+  }
+
+
+  /**
    * @param fieldName
    * @param value
    * @return
@@ -82,6 +134,17 @@ public class Condition
    * @param fieldName
    * @return
    */
+  public static Condition isNotNull(
+    String fieldName)
+  {
+    return new Condition(fieldName, Operator.IS_NOT_NULL);
+  }
+
+
+  /**
+   * @param fieldName
+   * @return
+   */
   public static Condition isNull(
     String fieldName)
   {
@@ -103,6 +166,30 @@ public class Condition
 
 
   /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
+  public static Condition notEquals(
+    String fieldName,
+    Object value)
+  {
+    return new Condition(fieldName, Operator.NOT_EQUALS, value);
+  }
+
+
+  /**
+   * @param subquery
+   * @return
+   */
+  public static Condition notExists(
+    Query<?> subquery)
+  {
+    return new Condition(Operator.NOT_EXISTS, subquery);
+  }
+
+
+  /**
    * @param conditions
    * @return
    */
@@ -115,6 +202,8 @@ public class Condition
   private Condition[] conditions;
   private String      fieldName;
   private Operator    operator;
+  private boolean     ref;
+  private Query<?>    subquery;
   private Object      value;
   private Object      value2;
 
@@ -126,6 +215,15 @@ public class Condition
   {
     this.conditions = conditions;
     this.operator = operator;
+    this.ref = false;
+  }
+
+
+  public Condition(Operator operator, Query<?> subquery)
+  {
+    this.subquery = subquery;
+    this.operator = operator;
+    this.ref = false;
   }
 
 
@@ -138,6 +236,7 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
+    this.ref = false;
   }
 
 
@@ -155,6 +254,7 @@ public class Condition
     this.operator = operator;
     this.value = value;
     this.value2 = value2;
+    this.ref = false;
   }
 
 
@@ -170,6 +270,7 @@ public class Condition
     this.fieldName = fieldName;
     this.operator = operator;
     this.value = sqlSafeString(value);
+    this.ref = false;
   }
 
 
@@ -184,6 +285,24 @@ public class Condition
     this.fieldName = fieldName;
     this.operator = operator;
     this.value = sqlSafeString(value);
+    this.ref = false;
+  }
+
+
+  /**
+   * @param fieldName
+   * @param operator
+   * @param value
+   * @param value2
+   */
+  public Condition(String fieldName, Operator operator, Object value, boolean ref)
+  {
+    super();
+    this.fieldName = fieldName;
+    this.operator = operator;
+    this.value = sqlSafeString(value);
+    this.value2 = null;
+    this.ref = ref;
   }
 
 
@@ -200,6 +319,7 @@ public class Condition
     this.operator = operator;
     this.value = sqlSafeString(value);
     this.value2 = sqlSafeString(value2);
+    this.ref = false;
   }
 
 
@@ -231,6 +351,15 @@ public class Condition
 
 
   /**
+   * @return the subquery
+   */
+  public Query<?> getSubquery()
+  {
+    return subquery;
+  }
+
+
+  /**
    * @return the value
    */
   public Object getValue()
@@ -245,6 +374,15 @@ public class Condition
   public Object getValue2()
   {
     return value2;
+  }
+
+
+  /**
+   * @return the ref
+   */
+  public boolean isRef()
+  {
+    return ref;
   }
 
 
@@ -275,6 +413,26 @@ public class Condition
     Operator operator)
   {
     this.operator = operator;
+  }
+
+
+  /**
+   * @param ref the ref to set
+   */
+  public void setRef(
+    boolean ref)
+  {
+    this.ref = ref;
+  }
+
+
+  /**
+   * @param subquery the subquery to set
+   */
+  public void setSubquery(
+    Query<?> subquery)
+  {
+    this.subquery = subquery;
   }
 
 

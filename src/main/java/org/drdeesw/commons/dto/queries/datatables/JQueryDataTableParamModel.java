@@ -50,24 +50,24 @@ public class JQueryDataTableParamModel implements Serializable
   /**
    * The copy constructor.
    * 
-   * @param paramModel
+   * @param that
    */
-  public JQueryDataTableParamModel(JQueryDataTableParamModel paramModel)
+  public JQueryDataTableParamModel(JQueryDataTableParamModel that)
   {
-    this.columnData = paramModel.columnData;
-    this.columnNames = paramModel.columnNames;
-    this.columnOrderables = paramModel.columnOrderables;
-    this.columnSearchable = paramModel.columnSearchable;
-    this.columnSearchRegex = paramModel.columnSearchRegex;
-    this.columnSearchValues = paramModel.columnSearchValues;
-    this.draw = paramModel.draw;
-    this.length = paramModel.length;
-    this.orderColumns = paramModel.orderColumns;
-    this.orderDirs = paramModel.orderDirs;
-    this.searchRegex = paramModel.searchRegex;
-    this.searchValue = paramModel.searchValue;
-    this.start = paramModel.start;
-    this.performCount = paramModel.performCount;
+    this.columnData = that.columnData;
+    this.columnNames = that.columnNames;
+    this.columnOrderables = that.columnOrderables;
+    this.columnSearchable = that.columnSearchable;
+    this.columnSearchRegex = that.columnSearchRegex;
+    this.columnSearchValues = that.columnSearchValues;
+    this.draw = that.draw;
+    this.length = that.length;
+    this.orderColumns = that.orderColumns;
+    this.orderDirs = that.orderDirs;
+    this.searchRegex = that.searchRegex;
+    this.searchValue = that.searchValue;
+    this.start = that.start;
+    this.performCount = that.performCount;
 
     this.ajaxData = new HashMap<String, Object>();
   }

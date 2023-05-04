@@ -5,6 +5,7 @@ package org.drdeesw.commons.dto.queries;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -145,12 +146,13 @@ public class Query<T>
    * @param name
    * @param ascending
    */
-  public void addOrdering(
+  public <Q extends Query<T>> Q addOrdering(
     String name,
     boolean ascending)
   {
     this.orderings.add(new Ordering(name, ascending));
 
+    return cast();
   }
 
 
@@ -193,6 +195,52 @@ public class Query<T>
     Object value)
   {
     add(Condition.equals(fieldName, value));
+
+    return cast();
+  }
+
+  /**
+   * @param propertyName
+   * @param value
+   * @param isRef true if the value is actually a reference to another attribute (e.g. x.a = y.b) versus a literal value
+   * @return
+   */
+  public <Q extends Query<T>> Q equals(
+    String propertyName,
+    Object value,
+    boolean isRef)
+  {
+    if (propertyName != null && value != null)
+      add(Condition.equals(propertyName, value, isRef));
+
+    return cast();
+  }
+
+
+  /**
+   * @param subquery
+   * @return
+   */
+  public <Q extends Query<T>> Q exists(
+    Query<?> subquery)
+  {
+    if (subquery != null)
+      add(Condition.exists(subquery));
+
+    return cast();
+  }
+
+
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q ge(
+    String fieldName,
+    Object value)
+  {
+    add(Condition.ge(fieldName, value));
 
     return cast();
   }
@@ -291,6 +339,21 @@ public class Query<T>
     return this.start == null ? defValue : this.start;
   }
 
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q gt(
+    String fieldName,
+    Object value)
+  {
+    add(Condition.gt(fieldName, value));
+
+    return cast();
+  }
+
+
 
   /**
    * @return
@@ -299,7 +362,6 @@ public class Query<T>
   {
     return !this.mandatoryConditions.isEmpty();
   }
-
 
   /**
    * @param string
@@ -347,11 +409,40 @@ public class Query<T>
 
 
   /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q in(
+    String fieldName,
+    Object... values)
+  {
+    add(Condition.in(fieldName, Arrays.asList(values)));
+
+    return cast();
+  }
+
+
+  /**
    * @return the caseInsensitive
    */
   public boolean isCaseInsensitive()
   {
     return caseInsensitive;
+  }
+
+
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q isNotNull(
+    String fieldName)
+  {
+    add(Condition.isNotNull(fieldName));
+
+    return cast();
   }
 
 
@@ -388,6 +479,35 @@ public class Query<T>
     String value)
   {
     add(Condition.like(fieldName, value));
+
+    return cast();
+  }
+
+
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q notEquals(
+    String fieldName,
+    Object value)
+  {
+    add(Condition.notEquals(fieldName, value));
+
+    return cast();
+  }
+
+
+  /**
+   * @param subquery
+   * @return
+   */
+  public <Q extends Query<T>> Q notExists(
+    Query<?> subquery)
+  {
+    if (subquery != null)
+      add(Condition.notExists(subquery));
 
     return cast();
   }
