@@ -269,7 +269,7 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = sqlSafeString(value);
+    this.value = value;
     this.ref = false;
   }
 
@@ -284,7 +284,7 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = sqlSafeString(value);
+    this.value = value;
     this.ref = false;
   }
 
@@ -300,7 +300,7 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = sqlSafeString(value);
+    this.value = value;
     this.value2 = null;
     this.ref = ref;
   }
@@ -317,8 +317,8 @@ public class Condition
     super();
     this.fieldName = fieldName;
     this.operator = operator;
-    this.value = sqlSafeString(value);
-    this.value2 = sqlSafeString(value2);
+    this.value = value;
+    this.value2 = value2;
     this.ref = false;
   }
 
@@ -442,7 +442,7 @@ public class Condition
   public void setValue(
     Object value)
   {
-    this.value = sqlSafeString(value);
+    this.value = value;
   }
 
 
@@ -452,26 +452,8 @@ public class Condition
   public void setValue2(
     Object value2)
   {
-    this.value2 = sqlSafeString(value2);
+    this.value2 = value2;
   }
 
 
-  /**
-   * Primarily for escaping single quotes in a string value.
-   * 
-   * @param value
-   * @return
-   */
-  private Object sqlSafeString(
-    Object value)
-  {
-    if (value instanceof String)
-    {
-      String str = (String)value;
-
-      return str.replace("'", "\\'");
-    }
-    else
-      return value;
-  }
 }

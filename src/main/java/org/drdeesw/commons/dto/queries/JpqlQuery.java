@@ -59,6 +59,25 @@ public class JpqlQuery<T> extends Query<T>
     this.df = df;
   }
 
+  /**
+   * Primarily for escaping single quotes in a string value.
+   * 
+   * @param value
+   * @return
+   */
+  private Object sqlSafeString(
+    Object value)
+  {
+    if (value instanceof String)
+    {
+      String str = (String)value;
+
+      return str.replace("'", "''");
+    }
+    else
+      return value;
+  }
+
 
   /**
    * @param value3
@@ -71,11 +90,7 @@ public class JpqlQuery<T> extends Query<T>
   {
     String formattedValue;
 
-    if (Operator.EXISTS.equals(operator) || Operator.NOT_EXISTS.equals(operator))
-    {
-      formattedValue = "(" + ")";
-    }
-    else if (Operator.IN.equals(operator))
+    if (Operator.IN.equals(operator))
     {
       Collection<?> collection = (Collection<?>)value;
       List<String> strValues = new ArrayList<String>(collection.size());
@@ -87,11 +102,11 @@ public class JpqlQuery<T> extends Query<T>
     else if (value instanceof String)
     {
       if (operator.isLike())
-        formattedValue = "'%" + value + "%'";
+        formattedValue = "'%" + sqlSafeString(value) + "%'";
       else if (isRef)
         formattedValue = String.valueOf(value);
       else
-        formattedValue = "'" + value + "'";
+        formattedValue = "'" + sqlSafeString(value) + "'";
 
       if (operator.isCaseInsensitive())
         formattedValue = LOWER_FUNC + "(" + formattedValue + ")";

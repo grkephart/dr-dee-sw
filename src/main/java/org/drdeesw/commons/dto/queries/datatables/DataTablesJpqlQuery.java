@@ -23,13 +23,28 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
   private Integer draw;
 
   /**
+   * Defaults to MATCH_ANY.
+   * 
    * @param clazz
    * @param model
    * @throws Exception
    */
   public DataTablesJpqlQuery(Class<T> clazz, JQueryDataTableParamModel model) throws Exception
   {
-    super(clazz, Match.MATCH_ANY);
+    this(clazz, model, Match.MATCH_ANY);
+  }
+
+
+  /**
+   * @param clazz
+   * @param model
+   * @param match
+   * @throws Exception
+   */
+  public DataTablesJpqlQuery(Class<T> clazz, JQueryDataTableParamModel model, Match match)
+      throws Exception
+  {
+    super(clazz, match);
     String searchValue = model.getSearchValue();
     Boolean searchRegex = model.getSearchRegex();
     boolean[] columnSearchable = model.getColumnSearchable();
@@ -39,6 +54,8 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
     int[] orderColumns = model.getOrderColumns();
     boolean[] orderDirs = model.getOrderDirs();
     String[] columnSearchValues = model.getColumnSearchValues();
+    boolean searchValueExists = searchValue != null && searchValue.length() > 0;
+    boolean columnSearchValuesExist = columnSearchValues != null && columnSearchValues.length > 0;
 
     this.draw = model.getDraw();
     super.setCaseInsensitive(
@@ -49,9 +66,9 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
     super.setMaxResults(model.getLength());
     super.setPerformCount(model.isPerformCount());
 
-    if (searchValue != null && searchValue.length() > 0)
+    if (searchValueExists)
     {
-      searchValue = searchValue.replace("'", "''");
+      // Do not escape single quotes here. This is done in JpqlQuery
 
       for (int x = 0; x < columnNames.length; x++)
       {
@@ -70,7 +87,7 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
     // All of the columnSearchValues need to be grouped together as part of 
     // an AND condition, but separate from the global searchValue, with which
     // they will be OR'd.
-    if (columnSearchValues != null && columnSearchValues.length > 0)
+    if (columnSearchValuesExist)
     {
       List<Condition> columnSearchConditions = new ArrayList<>();
 
@@ -79,9 +96,8 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
         if (columnSearchable[x])
         {
           String columnSearchValue = columnSearchValues[x];
-          String trimmedValue = columnSearchValue == null ? null
-                                                          : columnSearchValue.trim().replace("'",
-                                                            "''");
+          // Do not escape single quotes here. This is done in JpqlQuery
+          String trimmedValue = columnSearchValue == null ? null : columnSearchValue.trim();
 
           if (trimmedValue != null && trimmedValue.length() > 0)
           {
@@ -135,6 +151,19 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
       throws Exception
   {
     this(clazz, DataTablesParamUtility.getParamModel(allRequestParams));
+  }
+
+
+  /**
+   * @param clazz
+   * @param allRequestParams
+   * @param match
+   * @throws Exception
+   */
+  public DataTablesJpqlQuery(Class<T> clazz, MultiValueMap<String, String> allRequestParams, Match match)
+      throws Exception
+  {
+    this(clazz, DataTablesParamUtility.getParamModel(allRequestParams), match);
   }
 
 
