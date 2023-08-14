@@ -93,6 +93,8 @@ public class Query<T>
 
       if (operator == null)
         operator = this.caseInsensitive ? Operator.IEQUALS : Operator.EQUALS;
+      else
+        propertyName = propertyName.substring(0, propertyName.indexOf("[")); // remove operator from propertyName
 
       boolean added = addMandatoryCondition(propertyName, operator, value, false);
 
