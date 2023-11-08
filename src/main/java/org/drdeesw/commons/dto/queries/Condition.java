@@ -170,6 +170,19 @@ public class Condition
    * @param value
    * @return
    */
+  public static Condition lt(
+    String fieldName,
+    Object value)
+  {
+    return new Condition(fieldName, Operator.LT, value);
+  }
+
+
+  /**
+   * @param fieldName
+   * @param value
+   * @return
+   */
   public static Condition notEquals(
     String fieldName,
     Object value)
@@ -454,6 +467,5 @@ public class Condition
   {
     this.value2 = value2;
   }
-
 
 }

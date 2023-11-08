@@ -355,8 +355,6 @@ public class Query<T>
     return cast();
   }
 
-
-
   /**
    * @return
    */
@@ -364,6 +362,8 @@ public class Query<T>
   {
     return !this.mandatoryConditions.isEmpty();
   }
+
+
 
   /**
    * @param string
@@ -378,7 +378,6 @@ public class Query<T>
 
     return cast();
   }
-
 
   /**
    * @param string
@@ -481,6 +480,21 @@ public class Query<T>
     String value)
   {
     add(Condition.like(fieldName, value));
+
+    return cast();
+  }
+
+
+  /**
+   * @param string
+   * @param string2
+   * @return
+   */
+  public <Q extends Query<T>> Q lt(
+    String fieldName,
+    Object value)
+  {
+    add(Condition.lt(fieldName, value));
 
     return cast();
   }
