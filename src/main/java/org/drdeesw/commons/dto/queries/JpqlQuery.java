@@ -112,7 +112,7 @@ public class JpqlQuery<T> extends Query<T>
         formattedValue = LOWER_FUNC + "(" + formattedValue + ")";
     }
     else if (value instanceof Date)
-      formattedValue = this.df.format((Date)value);
+      formattedValue = "'" + this.df.format((Date)value) + "'";
     else
       formattedValue = String.valueOf(value);
 
