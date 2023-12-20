@@ -18,7 +18,23 @@ import java.util.List;
 public class JpqlQuery<T> extends Query<T>
 {
   private static final String LOWER_FUNC = "LOWER"; // database-dependent
-  private DateFormat          df;
+
+  /**
+   * Shortcut to creating subclasses of this class.
+   * UNTESTED.
+   * 
+   * @param <T2>
+   * @param clazz
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static <T2> T2 newQuery(
+    Class<T2> clazz)
+  {
+    return (T2)new JpqlQuery<T2>(clazz);
+  }
+
+  private DateFormat df;
 
   /**
    * 
@@ -57,25 +73,6 @@ public class JpqlQuery<T> extends Query<T>
   {
     super(clazz, match);
     this.df = df;
-  }
-
-  /**
-   * Primarily for escaping single quotes in a string value.
-   * 
-   * @param value
-   * @return
-   */
-  private Object sqlSafeString(
-    Object value)
-  {
-    if (value instanceof String)
-    {
-      String str = (String)value;
-
-      return str.replace("'", "''");
-    }
-    else
-      return value;
   }
 
 
@@ -219,6 +216,26 @@ public class JpqlQuery<T> extends Query<T>
     DateFormat df)
   {
     this.df = df;
+  }
+
+
+  /**
+   * Primarily for escaping single quotes in a string value.
+   * 
+   * @param value
+   * @return
+   */
+  private Object sqlSafeString(
+    Object value)
+  {
+    if (value instanceof String)
+    {
+      String str = (String)value;
+
+      return str.replace("'", "''");
+    }
+    else
+      return value;
   }
 
 
