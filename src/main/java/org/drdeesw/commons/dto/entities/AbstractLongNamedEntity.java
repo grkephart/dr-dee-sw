@@ -1,21 +1,26 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.base;
+package org.drdeesw.commons.dto.entities;
+
+import javax.persistence.MappedSuperclass;
+
+import org.drdeesw.commons.dto.base.LongNamedObject;
 
 /**
  * @author gary_kephart
  *
  */
-public class AbstractLongNamedObject extends AbstractNamedObject<Long>
-    implements LongUniqueObject
+@MappedSuperclass
+public class AbstractLongNamedEntity extends AbstractNamedEntity<Long>
+    implements LongNamedObject
 {
   private static final long serialVersionUID = 6902141588206147324L;
 
   /**
    * 
    */
-  public AbstractLongNamedObject()
+  public AbstractLongNamedEntity()
   {
     super();
   }
@@ -24,7 +29,7 @@ public class AbstractLongNamedObject extends AbstractNamedObject<Long>
   /**
    * @param that
    */
-  public AbstractLongNamedObject(AbstractNamedObject<Long> that)
+  public AbstractLongNamedEntity(AbstractNamedEntity<Long> that)
   {
     super(that);
   }
@@ -34,7 +39,7 @@ public class AbstractLongNamedObject extends AbstractNamedObject<Long>
    * @param id
    * @param name
    */
-  public AbstractLongNamedObject(Long id, String name)
+  public AbstractLongNamedEntity(Long id, String name)
   {
     super(id, name);
   }
@@ -43,7 +48,7 @@ public class AbstractLongNamedObject extends AbstractNamedObject<Long>
   /**
    * @param id
    */
-  public AbstractLongNamedObject(Long id)
+  public AbstractLongNamedEntity(Long id)
   {
     super(id);
   }
@@ -52,7 +57,7 @@ public class AbstractLongNamedObject extends AbstractNamedObject<Long>
   /**
    * @param name
    */
-  public AbstractLongNamedObject(String name)
+  public AbstractLongNamedEntity(String name)
   {
     super(name);
   }

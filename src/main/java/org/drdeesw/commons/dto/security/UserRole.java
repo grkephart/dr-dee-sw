@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
+import org.drdeesw.commons.dto.entities.AbstractLongUniqueEntity;
 
 
 /**
@@ -22,7 +22,7 @@ import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
  */
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLongUniqueObject
+public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLongUniqueEntity
 {
   private static final long serialVersionUID = 1L;
   @ManyToOne

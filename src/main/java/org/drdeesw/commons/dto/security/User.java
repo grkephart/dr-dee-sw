@@ -13,7 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
-import org.drdeesw.commons.dto.base.AbstractLongUniqueObject;
+import org.drdeesw.commons.dto.entities.AbstractLongUniqueEntity;
 import org.hibernate.annotations.Formula;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueObject
+public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueEntity
 {
   private static final long serialVersionUID = 1L;
   @Column(name = "enabled")

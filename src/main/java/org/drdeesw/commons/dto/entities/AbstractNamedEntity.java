@@ -1,10 +1,15 @@
-package org.drdeesw.commons.dto.base;
+package org.drdeesw.commons.dto.entities;
 
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+
+import org.drdeesw.commons.dto.base.NamedObject;
 
 
 /**
@@ -13,17 +18,19 @@ import javax.persistence.Transient;
  * @param <ID>
  */
 @MappedSuperclass
-public abstract class AbstractNamedObject<ID extends Serializable> extends
-    AbstractUniqueObject<ID> implements Comparable<NamedObject>, NamedObject
+@Access(value = AccessType.FIELD)
+public abstract class AbstractNamedEntity<ID extends Serializable> extends
+    AbstractUniqueEntity<ID> implements Comparable<NamedObject>, NamedObject
 {
   private static final long serialVersionUID = -6603247573392458671L;
+  @Column(name="name")
   private String            name;
 
 
   /**
    * 
    */
-  protected AbstractNamedObject()
+  protected AbstractNamedEntity()
   {
   }
 
@@ -31,7 +38,7 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
   /**
    * @param id
    */
-  protected AbstractNamedObject(ID id)
+  protected AbstractNamedEntity(ID id)
   {
     super(id);
   }
@@ -41,7 +48,7 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
    * @param id
    * @param name
    */
-  protected AbstractNamedObject(ID id, String name)
+  protected AbstractNamedEntity(ID id, String name)
   {
     super(id);
     this.name = name;
@@ -51,7 +58,7 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
   /**
    * @param name
    */
-  protected AbstractNamedObject(String name)
+  protected AbstractNamedEntity(String name)
   {
     this.name = name;
   }
@@ -60,7 +67,7 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
   /**
    * @param that
    */
-  protected AbstractNamedObject(AbstractNamedObject<ID> that)
+  protected AbstractNamedEntity(AbstractNamedEntity<ID> that)
   {
     super(that);
     this.name = that.name;
@@ -103,7 +110,7 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
     if (getClass() != obj.getClass())
       return false;
     @SuppressWarnings("unchecked")
-    AbstractNamedObject<ID> other = (AbstractNamedObject<ID>)obj;
+    AbstractNamedEntity<ID> other = (AbstractNamedEntity<ID>)obj;
     if (this.name == null)
     {
       if (other.name != null)
@@ -144,12 +151,12 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
    */
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends NamedObject> T setName(
+  public <NO extends NamedObject> NO setName(
     String name)
   {
     this.name = name;
 
-    return (T)cast();
+    return (NO)cast();
   }
 
 
@@ -165,7 +172,7 @@ public abstract class AbstractNamedObject<ID extends Serializable> extends
 
 
   public void update(
-    AbstractNamedObject<ID> that)
+    AbstractNamedEntity<ID> that)
   {
     super.update(that);
     this.name = that.name;

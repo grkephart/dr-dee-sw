@@ -1,10 +1,12 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.base;
+package org.drdeesw.commons.dto.entities;
 
 
 import javax.persistence.MappedSuperclass;
+
+import org.drdeesw.commons.dto.base.LongUniqueObject;
 
 
 /**
@@ -12,7 +14,7 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
-public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long>
+public abstract class AbstractLongUniqueEntity extends AbstractUniqueEntity<Long>
     implements LongUniqueObject
 {
   private static final long serialVersionUID = -9190810275366831598L;
@@ -21,7 +23,7 @@ public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long
   /**
    * Hibernate
    */
-  protected AbstractLongUniqueObject()
+  protected AbstractLongUniqueEntity()
   {
   }
 
@@ -29,7 +31,7 @@ public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long
   /**
    * @param that
    */
-  protected AbstractLongUniqueObject(AbstractLongUniqueObject that)
+  protected AbstractLongUniqueEntity(AbstractLongUniqueEntity that)
   {
     super(that);
   }
@@ -38,7 +40,7 @@ public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long
   /**
    * @param id
    */
-  protected AbstractLongUniqueObject(Long id)
+  protected AbstractLongUniqueEntity(Long id)
   {
     super(id);
   }
@@ -48,7 +50,7 @@ public abstract class AbstractLongUniqueObject extends AbstractUniqueObject<Long
    * @param that
    */
   public void update(
-    AbstractLongUniqueObject that)
+    AbstractLongUniqueEntity that)
   {
     super.update(that);
   }

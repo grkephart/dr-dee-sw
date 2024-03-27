@@ -1,20 +1,12 @@
 /**
  * 
  */
-package org.drdeesw.commons.dto.base;
+package org.drdeesw.commons.dto.pojos;
 
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
-import org.hibernate.annotations.GenericGenerator;
+import org.drdeesw.commons.dto.base.UniqueObject;
 
 
 /**
@@ -23,21 +15,15 @@ import org.hibernate.annotations.GenericGenerator;
  * @author gary_kephart
  *
  */
-@MappedSuperclass
-@Access(value = AccessType.FIELD)
-public abstract class AbstractUniqueObject<ID extends Serializable> implements UniqueObject<ID>
+public abstract class AbstractUniquePojo<ID extends Serializable> implements UniqueObject<ID>
 {
   private static final long serialVersionUID = 3882181757154157592L;
-  @Id
-  @GenericGenerator(name = "native", strategy = "native")
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @Column(name="id")
   private ID                id;
 
   /**
    * The default constructor.
    */
-  protected AbstractUniqueObject()
+  protected AbstractUniquePojo()
   {
   }
 
@@ -47,7 +33,7 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
    * 
    * @param id the ID of the object to construct
    */
-  protected AbstractUniqueObject(ID id)
+  protected AbstractUniquePojo(ID id)
   {
     this.id = id;
   }
@@ -58,7 +44,7 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
    * 
    * @param that the object to copy
    */
-  protected AbstractUniqueObject(AbstractUniqueObject<ID> that)
+  protected AbstractUniquePojo(AbstractUniquePojo<ID> that)
   {
     this.id = that.id;
   }
@@ -68,7 +54,7 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
    * @return
    */
   @SuppressWarnings("unchecked")
-  protected <T extends AbstractUniqueObject<ID>> T cast()
+  protected <T extends AbstractUniquePojo<ID>> T cast()
   {
     return (T)this;
   }
@@ -88,7 +74,7 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
     if (getClass() != obj.getClass())
       return false;
     @SuppressWarnings("unchecked")
-    AbstractUniqueObject<ID> other = (AbstractUniqueObject<ID>)obj;
+    AbstractUniquePojo<ID> other = (AbstractUniquePojo<ID>)obj;
     if (this.id == null)
     {
       if (other.id != null)
@@ -116,10 +102,6 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
 
   /**
    * Returns the ID of the object.
-   * Subclasses need to specify the Column annotation.
-   * The ID annotation is necessary:
-   * "You cannot override the [id] non-identifier property from the [...AbstractUniqueObject] base class or MappedSuperclass and make it an identifier in the subclass!"
-   * So we should not need it in the subclasses.
    * 
    * @return the unique id of the object.
    */
@@ -170,7 +152,7 @@ public abstract class AbstractUniqueObject<ID extends Serializable> implements U
    * @param that
    */
   public void update(
-    AbstractUniqueObject<ID> that)
+    AbstractUniquePojo<ID> that)
   {
     this.id = that.id;
   }
