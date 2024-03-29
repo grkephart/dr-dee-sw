@@ -3,21 +3,21 @@
  */
 package org.drdeesw.commons.dto.pojos;
 
-import org.drdeesw.commons.dto.base.LongNamedObject;
+import org.drdeesw.commons.dto.base.NamedLongUniqueObject;
 
 /**
  * @author gary_kephart
  *
  */
-public class AbstractLongNamedPojo extends AbstractNamedPojo<Long>
-    implements LongNamedObject
+public class AbstractNamedLongUniquePojo extends AbstractNamedUniquePojo<Long>
+    implements NamedLongUniqueObject
 {
   private static final long serialVersionUID = 6902141588206147324L;
 
   /**
    * 
    */
-  public AbstractLongNamedPojo()
+  public AbstractNamedLongUniquePojo()
   {
     super();
   }
@@ -26,7 +26,7 @@ public class AbstractLongNamedPojo extends AbstractNamedPojo<Long>
   /**
    * @param that
    */
-  public AbstractLongNamedPojo(AbstractNamedPojo<Long> that)
+  public AbstractNamedLongUniquePojo(AbstractNamedLongUniquePojo that)
   {
     super(that);
   }
@@ -36,7 +36,7 @@ public class AbstractLongNamedPojo extends AbstractNamedPojo<Long>
    * @param id
    * @param name
    */
-  public AbstractLongNamedPojo(Long id, String name)
+  public AbstractNamedLongUniquePojo(Long id, String name)
   {
     super(id, name);
   }
@@ -45,7 +45,7 @@ public class AbstractLongNamedPojo extends AbstractNamedPojo<Long>
   /**
    * @param id
    */
-  public AbstractLongNamedPojo(Long id)
+  public AbstractNamedLongUniquePojo(Long id)
   {
     super(id);
   }
@@ -54,7 +54,7 @@ public class AbstractLongNamedPojo extends AbstractNamedPojo<Long>
   /**
    * @param name
    */
-  public AbstractLongNamedPojo(String name)
+  public AbstractNamedLongUniquePojo(String name)
   {
     super(name);
   }

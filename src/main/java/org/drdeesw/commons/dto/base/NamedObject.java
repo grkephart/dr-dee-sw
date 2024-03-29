@@ -20,6 +20,6 @@ public interface NamedObject extends DataTransferObject
    * 
    * @param name the name to set
    */
-  <T extends NamedObject> T setName(
+  <NO extends NamedObject> NO setName(
     String name);
 }

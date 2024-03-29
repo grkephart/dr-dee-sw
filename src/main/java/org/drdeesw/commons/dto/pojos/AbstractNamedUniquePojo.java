@@ -4,6 +4,7 @@ package org.drdeesw.commons.dto.pojos;
 import java.io.Serializable;
 
 import org.drdeesw.commons.dto.base.NamedObject;
+import org.drdeesw.commons.dto.base.NamedUniqueObject;
 
 
 /**
@@ -11,8 +12,8 @@ import org.drdeesw.commons.dto.base.NamedObject;
  *
  * @param <ID>
  */
-public abstract class AbstractNamedPojo<ID extends Serializable> extends
-    AbstractUniquePojo<ID> implements Comparable<NamedObject>, NamedObject
+public abstract class AbstractNamedUniquePojo<ID extends Serializable> extends
+    AbstractUniquePojo<ID> implements Comparable<NamedObject>, NamedUniqueObject<ID>
 {
   private static final long serialVersionUID = -6603247573392458671L;
   private String            name;
@@ -21,7 +22,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
   /**
    * 
    */
-  protected AbstractNamedPojo()
+  protected AbstractNamedUniquePojo()
   {
   }
 
@@ -29,7 +30,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
   /**
    * @param id
    */
-  protected AbstractNamedPojo(ID id)
+  protected AbstractNamedUniquePojo(ID id)
   {
     super(id);
   }
@@ -39,7 +40,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
    * @param id
    * @param name
    */
-  protected AbstractNamedPojo(ID id, String name)
+  protected AbstractNamedUniquePojo(ID id, String name)
   {
     super(id);
     this.name = name;
@@ -49,7 +50,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
   /**
    * @param name
    */
-  protected AbstractNamedPojo(String name)
+  protected AbstractNamedUniquePojo(String name)
   {
     this.name = name;
   }
@@ -58,7 +59,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
   /**
    * @param that
    */
-  protected AbstractNamedPojo(AbstractNamedPojo<ID> that)
+  protected AbstractNamedUniquePojo(AbstractNamedUniquePojo<ID> that)
   {
     super(that);
     this.name = that.name;
@@ -101,7 +102,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
     if (getClass() != obj.getClass())
       return false;
     @SuppressWarnings("unchecked")
-    AbstractNamedPojo<ID> other = (AbstractNamedPojo<ID>)obj;
+    AbstractNamedUniquePojo<ID> other = (AbstractNamedUniquePojo<ID>)obj;
     if (this.name == null)
     {
       if (other.name != null)
@@ -150,6 +151,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
   }
 
 
+
   /* (non-Javadoc)
    * @see com.dr_dee_sw.commons.dto.AbstractUniqueObject#toString()
    */
@@ -162,7 +164,7 @@ public abstract class AbstractNamedPojo<ID extends Serializable> extends
 
 
   public void update(
-    AbstractNamedPojo<ID> that)
+    AbstractNamedUniquePojo<ID> that)
   {
     super.update(that);
     this.name = that.name;

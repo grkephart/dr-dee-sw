@@ -32,6 +32,7 @@
        Spring Data 3.x requires Spring Framework 6.0.0 or better. 
      -->
     <spring-data.version>2.7.9</spring-data.version>
+    <spring-security.version></spring-security.version>
     <junit.version>4.13.2</junit.version>
   </properties>
 

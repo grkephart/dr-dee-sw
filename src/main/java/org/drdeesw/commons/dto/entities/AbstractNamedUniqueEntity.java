@@ -10,6 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.drdeesw.commons.dto.base.NamedObject;
+import org.drdeesw.commons.dto.base.NamedUniqueObject;
 
 
 /**
@@ -19,8 +20,8 @@ import org.drdeesw.commons.dto.base.NamedObject;
  */
 @MappedSuperclass
 @Access(value = AccessType.FIELD)
-public abstract class AbstractNamedEntity<ID extends Serializable> extends
-    AbstractUniqueEntity<ID> implements Comparable<NamedObject>, NamedObject
+public abstract class AbstractNamedUniqueEntity<ID extends Serializable> extends
+    AbstractUniqueEntity<ID> implements Comparable<NamedObject>, NamedUniqueObject<ID>
 {
   private static final long serialVersionUID = -6603247573392458671L;
   @Column(name="name")
@@ -30,7 +31,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
   /**
    * 
    */
-  protected AbstractNamedEntity()
+  protected AbstractNamedUniqueEntity()
   {
   }
 
@@ -38,7 +39,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
   /**
    * @param id
    */
-  protected AbstractNamedEntity(ID id)
+  protected AbstractNamedUniqueEntity(ID id)
   {
     super(id);
   }
@@ -48,7 +49,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
    * @param id
    * @param name
    */
-  protected AbstractNamedEntity(ID id, String name)
+  protected AbstractNamedUniqueEntity(ID id, String name)
   {
     super(id);
     this.name = name;
@@ -58,7 +59,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
   /**
    * @param name
    */
-  protected AbstractNamedEntity(String name)
+  protected AbstractNamedUniqueEntity(String name)
   {
     this.name = name;
   }
@@ -67,7 +68,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
   /**
    * @param that
    */
-  protected AbstractNamedEntity(AbstractNamedEntity<ID> that)
+  protected AbstractNamedUniqueEntity(AbstractNamedUniqueEntity<ID> that)
   {
     super(that);
     this.name = that.name;
@@ -110,7 +111,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
     if (getClass() != obj.getClass())
       return false;
     @SuppressWarnings("unchecked")
-    AbstractNamedEntity<ID> other = (AbstractNamedEntity<ID>)obj;
+    AbstractNamedUniqueEntity<ID> other = (AbstractNamedUniqueEntity<ID>)obj;
     if (this.name == null)
     {
       if (other.name != null)
@@ -172,7 +173,7 @@ public abstract class AbstractNamedEntity<ID extends Serializable> extends
 
 
   public void update(
-    AbstractNamedEntity<ID> that)
+    AbstractNamedUniqueEntity<ID> that)
   {
     super.update(that);
     this.name = that.name;

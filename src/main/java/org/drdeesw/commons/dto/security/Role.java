@@ -11,7 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
-import org.drdeesw.commons.dto.entities.AbstractNamedEntity;
+import org.drdeesw.commons.dto.entities.AbstractNamedUniqueEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @MappedSuperclass
 @Access(AccessType.FIELD)
 @AttributeOverride(name = "name", column = @Column(name = "group_name"))
-public class Role<UR extends UserRole<?,?>> extends AbstractNamedEntity<Long>
+public class Role<UR extends UserRole<?,?>> extends AbstractNamedUniqueEntity<Long>
 {
   private static final long serialVersionUID = 1L;
   @OneToMany(mappedBy = "role", fetch=FetchType.LAZY)
