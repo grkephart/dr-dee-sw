@@ -77,6 +77,20 @@ public class JpqlQuery<T> extends Query<T>
 
 
   /**
+   * Converts a POJO query (PQ) of class P to an entity query of type T.
+   * 
+   * @param <EQ>
+   * @param entityClass
+   * @param query
+   */
+  public <PQ extends JpqlQuery<?>> JpqlQuery(Class<T> entityClass, PQ that)
+  {
+    super(entityClass, that);
+    this.df = that.getDf();
+  }
+
+
+  /**
    * @param value3
    * @return
    */
@@ -115,6 +129,15 @@ public class JpqlQuery<T> extends Query<T>
 
     return formattedValue;
 
+  }
+
+
+  /**
+   * @return
+   */
+  public DateFormat getDf()
+  {
+    return df;
   }
 
 

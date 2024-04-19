@@ -28,7 +28,7 @@ public abstract class AbstractLongUniquePojo extends AbstractUniquePojo<Long>
   /**
    * @param that
    */
-  protected AbstractLongUniquePojo(AbstractLongUniquePojo that)
+  protected AbstractLongUniquePojo(LongUniqueObject that)
   {
     super(that);
   }

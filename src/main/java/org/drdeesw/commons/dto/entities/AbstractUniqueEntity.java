@@ -26,7 +26,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @MappedSuperclass
 @Access(value = AccessType.FIELD)
-public abstract class AbstractUniqueEntity<ID extends Serializable> implements UniqueObject<ID>
+public abstract class AbstractUniqueEntity<ID extends Serializable> implements UniqueEntity<ID>
 {
   private static final long serialVersionUID = 3882181757154157592L;
   @Id
@@ -59,9 +59,9 @@ public abstract class AbstractUniqueEntity<ID extends Serializable> implements U
    * 
    * @param that the object to copy
    */
-  protected AbstractUniqueEntity(AbstractUniqueEntity<ID> that)
+  protected AbstractUniqueEntity(UniqueObject<ID> that)
   {
-    this.id = that.id;
+    this.id = that.getId();
   }
 
 

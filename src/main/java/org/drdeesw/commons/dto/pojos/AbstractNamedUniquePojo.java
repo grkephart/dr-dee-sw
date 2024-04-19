@@ -62,7 +62,18 @@ public abstract class AbstractNamedUniquePojo<ID extends Serializable> extends
   protected AbstractNamedUniquePojo(AbstractNamedUniquePojo<ID> that)
   {
     super(that);
-    this.name = that.name;
+    this.name = that.getName();
+  }
+
+
+
+  /**
+   * @param that
+   */
+  public AbstractNamedUniquePojo(NamedUniqueObject<ID> that)
+  {
+    super(that);
+    this.name = that.getName();
   }
 
 

@@ -4,6 +4,7 @@
 package org.drdeesw.commons.dto.queries;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,18 @@ public class QueryResults<T> implements Iterable<T>
   private Query<T> query;
   private List<T>  records;
   private int      totalRecords;
+
+  /**
+   * @param draw
+   * @param values
+   */
+  public QueryResults(Integer draw, List<T> values)
+  {
+    this.draw = draw;
+    this.records = values;
+    this.totalRecords = values.size();
+  }
+
 
   /**
    * @param values
@@ -41,6 +54,16 @@ public class QueryResults<T> implements Iterable<T>
     this.draw = draw;
     this.records = (List<T>)Arrays.asList(values);
     this.totalRecords = totalRecords;
+  }
+
+
+  /**
+   * @param values
+   */
+  public QueryResults(List<T> values)
+  {
+    this.records = new ArrayList<T>(values);
+    this.totalRecords = values.size();
   }
 
 
@@ -95,6 +118,26 @@ public class QueryResults<T> implements Iterable<T>
     this.totalRecords = values.length;
   }
 
+
+  /**
+   * @param draw
+   * @param totalRecords
+   */
+  public QueryResults(Integer draw, int totalRecords)
+  {
+    this.draw = draw;
+    this.records = new ArrayList<T>(totalRecords);
+    this.query = null;
+    this.totalRecords = totalRecords;
+  }
+
+  /**
+   * @param obj
+   */
+  public void add(T obj)
+  {
+    this.records.add(obj);
+  }
 
   /**
    * @param index

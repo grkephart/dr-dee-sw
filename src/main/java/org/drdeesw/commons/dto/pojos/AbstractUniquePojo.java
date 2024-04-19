@@ -15,7 +15,7 @@ import org.drdeesw.commons.dto.base.UniqueObject;
  * @author gary_kephart
  *
  */
-public abstract class AbstractUniquePojo<ID extends Serializable> implements UniqueObject<ID>
+public abstract class AbstractUniquePojo<ID extends Serializable> implements UniquePojo<ID>
 {
   private static final long serialVersionUID = 3882181757154157592L;
   private ID                id;
@@ -44,9 +44,19 @@ public abstract class AbstractUniquePojo<ID extends Serializable> implements Uni
    * 
    * @param that the object to copy
    */
-  protected AbstractUniquePojo(AbstractUniquePojo<ID> that)
+  protected AbstractUniquePojo(UniquePojo<ID> that)
   {
-    this.id = that.id;
+    this.id = that.getId();
+  }
+
+
+
+  /**
+   * @param that
+   */
+  public AbstractUniquePojo(UniqueObject<ID> that)
+  {
+    this.id = that.getId();
   }
 
 

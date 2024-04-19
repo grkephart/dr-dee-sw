@@ -31,7 +31,7 @@ public abstract class AbstractLongUniqueEntity extends AbstractUniqueEntity<Long
   /**
    * @param that
    */
-  protected AbstractLongUniqueEntity(AbstractLongUniqueEntity that)
+  protected AbstractLongUniqueEntity(LongUniqueObject that)
   {
     super(that);
   }

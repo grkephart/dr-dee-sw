@@ -68,10 +68,10 @@ public abstract class AbstractNamedUniqueEntity<ID extends Serializable> extends
   /**
    * @param that
    */
-  protected AbstractNamedUniqueEntity(AbstractNamedUniqueEntity<ID> that)
+  protected AbstractNamedUniqueEntity(NamedUniqueObject<ID> that)
   {
     super(that);
-    this.name = that.name;
+    this.name = that.getName();
   }
 
 

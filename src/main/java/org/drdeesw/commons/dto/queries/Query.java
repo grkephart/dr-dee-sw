@@ -55,6 +55,24 @@ public class Query<T>
 
 
   /**
+   * Converts a POJO query (PQ) of class P to an entity query of type T.
+   * 
+   * @param <PQ>
+   * @param entityClass
+   * @param that
+   */
+  public <PQ extends JpqlQuery<?>> Query(Class<T> entityClass, PQ that)
+  {
+    this.alias = that.getAlias();
+    this.clazz = entityClass;
+    this.conditions = new ArrayList<Condition>(that.getConditions());
+    this.mandatoryConditions = new ArrayList<Condition>(that.getMandatoryConditions());
+    this.match = that.getMatch();
+    this.orderings = new ArrayList<>(that.getOrderings());
+  }
+
+
+  /**
    * @param <Q>
    * @param condition
    * @return

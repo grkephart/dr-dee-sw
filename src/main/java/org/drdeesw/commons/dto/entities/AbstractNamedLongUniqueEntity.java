@@ -29,7 +29,7 @@ public class AbstractNamedLongUniqueEntity extends AbstractNamedUniqueEntity<Lon
   /**
    * @param that
    */
-  public AbstractNamedLongUniqueEntity(AbstractNamedUniqueEntity<Long> that)
+  public AbstractNamedLongUniqueEntity(NamedLongUniqueObject that)
   {
     super(that);
   }

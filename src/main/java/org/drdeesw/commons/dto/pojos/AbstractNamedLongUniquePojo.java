@@ -3,7 +3,9 @@
  */
 package org.drdeesw.commons.dto.pojos;
 
+
 import org.drdeesw.commons.dto.base.NamedLongUniqueObject;
+
 
 /**
  * @author gary_kephart
@@ -57,6 +59,12 @@ public class AbstractNamedLongUniquePojo extends AbstractNamedUniquePojo<Long>
   public AbstractNamedLongUniquePojo(String name)
   {
     super(name);
+  }
+
+
+  public AbstractNamedLongUniquePojo(NamedLongUniqueObject that)
+  {
+    super(that);
   }
 
 

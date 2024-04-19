@@ -20,24 +20,24 @@ import org.drdeesw.commons.dto.entities.AbstractLongUniqueEntity;
  * @author gkephart
  *
  */
+@SuppressWarnings("serial")
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLongUniqueEntity
+public class UserRoleEntity extends AbstractLongUniqueEntity implements UserRole
 {
-  private static final long serialVersionUID = 1L;
   @ManyToOne
   @JoinColumn(name = "group_id")
-  private R                 role;
+  private Long                 roleId;
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private U                 user;
+  private Long                 userId;
   @Column(name = "username")
   private String            username;
 
   /**
    * Hibernate
    */
-  public UserRole()
+  public UserRoleEntity()
   {
   }
 
@@ -45,18 +45,18 @@ public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLong
   /**
    * @return the role
    */
-  public R getRole()
+  public Long getRoleId()
   {
-    return role;
+    return roleId;
   }
 
 
   /**
    * @return the user
    */
-  public U getUser()
+  public Long getUserId()
   {
-    return user;
+    return userId;
   }
 
 
@@ -70,22 +70,22 @@ public class UserRole<U extends User<?>, R extends Role<?>> extends AbstractLong
 
 
   /**
-   * @param role the role to set
+   * @param roroleIdle the role to set
    */
-  public void setRole(
-    R role)
+  public void setRoleId(
+    Long roleId)
   {
-    this.role = role;
+    this.roleId = roleId;
   }
 
 
   /**
-   * @param user the user to set
+   * @param userId the userId to set
    */
-  public void setUser(
-    U user)
+  public void setUserId(
+    Long userId)
   {
-    this.user = user;
+    this.userId = userId;
   }
 
 

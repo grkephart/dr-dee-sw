@@ -4,19 +4,13 @@
 package org.drdeesw.commons.dto.security;
 
 
-import java.util.Set;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
 import org.drdeesw.commons.dto.entities.AbstractLongUniqueEntity;
 import org.hibernate.annotations.Formula;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /**
@@ -25,30 +19,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author gary_kephart
  *
  */
+@SuppressWarnings("serial")
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueEntity
+public class UserEntity extends AbstractLongUniqueEntity implements User
 {
-  private static final long serialVersionUID = 1L;
   @Column(name = "enabled")
-  private boolean           enabled;
+  private boolean enabled;
   @Column(name = "name")
-  private String            name;
-  private String            roleNames;
+  private String  name;
+  private String  roleNames;
   @Column(name = "username")
-  private String            username;
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private Set<UR>     userRoles;
+  private String  username;
 
   /**
    * Hibernate
    */
-  public User()
+  public UserEntity()
   {
   }
 
 
-  public User(Long id)
+  public UserEntity(Long id)
   {
     super(id);
   }
@@ -60,7 +52,7 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueEntity
    * @param name
    * @param email
    */
-  public User(String name, String username)
+  public UserEntity(String name, String username)
   {
     this.username = username;
     this.name = name;
@@ -74,11 +66,25 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueEntity
    * @param username
    * @param enabled
    */
-  public User(String name, String username, boolean enabled)
+  public UserEntity(String name, String username, boolean enabled)
   {
     this.enabled = enabled;
     this.username = username;
     this.name = name;
+  }
+
+
+  /**
+   * @param that
+   */
+  public UserEntity(UserPojo that)
+  {
+    super(that);
+    this.enabled = that.isEnabled();
+    this.name = that.getName();
+    this.roleNames = that.getRoleNames();
+    this.username = that.getUsername();
+
   }
 
 
@@ -116,16 +122,6 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueEntity
   public String getUsername()
   {
     return username;
-  }
-
-
-  /**
-   * @return the userRoles
-   */
-  @JsonIgnore
-  public Set<UR> getUserRoles()
-  {
-    return userRoles;
   }
 
 
@@ -174,13 +170,4 @@ public class User<UR extends UserRole<?,?>> extends AbstractLongUniqueEntity
     this.username = email;
   }
 
-
-  /**
-   * @param userRoles the userRoles to set
-   */
-  public void setUserRoles(
-    Set<UR> userRoles)
-  {
-    this.userRoles = userRoles;
-  }
 }
