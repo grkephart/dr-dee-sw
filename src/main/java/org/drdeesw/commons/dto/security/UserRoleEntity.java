@@ -7,8 +7,6 @@ package org.drdeesw.commons.dto.security;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.drdeesw.commons.dto.entities.AbstractLongUniqueEntity;
@@ -25,14 +23,12 @@ import org.drdeesw.commons.dto.entities.AbstractLongUniqueEntity;
 @Access(AccessType.FIELD)
 public class UserRoleEntity extends AbstractLongUniqueEntity implements UserRole
 {
-  @ManyToOne
-  @JoinColumn(name = "group_id")
-  private Long                 roleId;
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private Long                 userId;
+  @Column(name = "group_id")
+  private Long   roleId;
+  @Column(name = "user_id")
+  private Long   userId;
   @Column(name = "username")
-  private String            username;
+  private String username;
 
   /**
    * Hibernate
@@ -72,8 +68,7 @@ public class UserRoleEntity extends AbstractLongUniqueEntity implements UserRole
   /**
    * @param roroleIdle the role to set
    */
-  public void setRoleId(
-    Long roleId)
+  public void setRoleId(Long roleId)
   {
     this.roleId = roleId;
   }
@@ -82,8 +77,7 @@ public class UserRoleEntity extends AbstractLongUniqueEntity implements UserRole
   /**
    * @param userId the userId to set
    */
-  public void setUserId(
-    Long userId)
+  public void setUserId(Long userId)
   {
     this.userId = userId;
   }
@@ -92,8 +86,7 @@ public class UserRoleEntity extends AbstractLongUniqueEntity implements UserRole
   /**
    * @param username the username to set
    */
-  public void setUsername(
-    String username)
+  public void setUsername(String username)
   {
     this.username = username;
   }

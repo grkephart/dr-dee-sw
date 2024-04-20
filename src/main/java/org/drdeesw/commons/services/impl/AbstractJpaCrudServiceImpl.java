@@ -146,7 +146,7 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    */
   private <Q extends JpqlQuery<E>> QueryResults<P> findByEntityQuery(Q query) throws Exception
   {
-    QueryResults<E> queryResults = this.queryRepository.findByQuery(query);
+    QueryResults<E> queryResults = this.queryRepository.advancedSearch(query);
 
     return convertEntityToPojo(queryResults);
   }
