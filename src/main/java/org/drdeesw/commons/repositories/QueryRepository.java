@@ -18,11 +18,11 @@ import org.drdeesw.commons.dto.queries.QueryResults;
 public interface QueryRepository<T extends UniqueObject<ID>, ID extends Serializable>
 {
   /**
-   * Can't name this method find... because Spring will have a fit.
+   * Remember to add this to @EnableJpaRepositories(basePackages = { "org.drdeesw.commons.repositories", ...})
    * 
    * @param query
    * @return
    * @throws Exception
    */
-  <Q extends JpqlQuery<T>> QueryResults<T> advancedSearch(Q query) throws Exception;
+  <Q extends JpqlQuery<T>> QueryResults<T> findByQuery(Q query) throws Exception;
 }

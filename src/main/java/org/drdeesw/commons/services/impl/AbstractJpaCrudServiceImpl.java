@@ -13,7 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.drdeesw.commons.dto.base.UniqueObject;
+import org.drdeesw.commons.dto.entities.UniqueEntity;
+import org.drdeesw.commons.dto.pojos.UniquePojo;
 import org.drdeesw.commons.dto.queries.JpqlQuery;
 import org.drdeesw.commons.dto.queries.QueryResults;
 import org.drdeesw.commons.dto.queries.datatables.DataTablesJpqlQuery;
@@ -31,7 +32,7 @@ import org.springframework.util.MultiValueMap;
  * @param <E>  the entity class
  * @param <ID> the ID class
  */
-public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E extends UniqueObject<ID>, ID extends Serializable>
+public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E extends UniqueEntity<ID>, ID extends Serializable>
     extends AbstractService implements CrudService<P, ID>
 {
   private Class<E>               entityClass;
@@ -51,7 +52,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @param entities
    * @return
    */
-  private List<P> convertEntityToPojo(Collection<E> entities)
+  private List<P> convertEntityToPojo(
+    Collection<E> entities)
   {
     List<P> pojos = new ArrayList<P>(entities.size());
 
@@ -65,16 +67,19 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @param entity
    * @return
    */
-  protected abstract P convertEntityToPojo(E entity);
+  protected abstract P convertEntityToPojo(
+    E entity);
 
 
   /**
    * @param entityQueryResults
    * @return
    */
-  protected QueryResults<P> convertEntityToPojo(QueryResults<E> entityQueryResults)
+  protected QueryResults<P> convertEntityToPojo(
+    QueryResults<E> entityQueryResults)
   {
-    QueryResults<P> queryResults = new QueryResults<P>(entityQueryResults.getDraw(), entityQueryResults.getSize());
+    QueryResults<P> queryResults = new QueryResults<P>(entityQueryResults.getDraw(),
+        entityQueryResults.getSize());
 
     entityQueryResults.forEach(entity -> queryResults.add(convertEntityToPojo(entity)));
 
@@ -86,7 +91,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @param entities
    * @return
    */
-  private List<E> convertPojoToEntity(Collection<P> pojos)
+  private List<E> convertPojoToEntity(
+    Collection<P> pojos)
   {
     List<E> entities = new ArrayList<E>(pojos.size());
 
@@ -103,7 +109,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @param pojo
    * @return
    */
-  protected abstract E convertPojoToEntity(P pojo);
+  protected abstract E convertPojoToEntity(
+    P pojo);
 
 
   /*
@@ -114,7 +121,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * UniqueObject)
    */
   @Override
-  public P create(P obj)
+  public P create(
+    P obj)
   {
     E entity = convertPojoToEntity(obj);
 
@@ -130,7 +138,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * UniqueObject)
    */
   @Override
-  public void delete(P obj)
+  public void delete(
+    P obj)
   {
     E entity = convertPojoToEntity(obj);
 
@@ -144,9 +153,10 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @return
    * @throws Exception
    */
-  private <Q extends JpqlQuery<E>> QueryResults<P> findByEntityQuery(Q query) throws Exception
+  private <Q extends JpqlQuery<E>> QueryResults<P> findByEntityQuery(
+    Q query) throws Exception
   {
-    QueryResults<E> queryResults = this.queryRepository.advancedSearch(query);
+    QueryResults<E> queryResults = this.queryRepository.findByQuery(query);
 
     return convertEntityToPojo(queryResults);
   }
@@ -158,11 +168,13 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @see org.drdeesw.commons.services.CrudService#findById(java.io.Serializable)
    */
   @Override
-  public Optional<P> findById(ID id)
+  public Optional<P> findById(
+    ID id)
   {
     Optional<E> optEntity = this.repository.findById(id);
 
-    return optEntity.isPresent() ? Optional.of(convertEntityToPojo(optEntity.get())) : Optional.empty();
+    return optEntity.isPresent() ? Optional.of(convertEntityToPojo(optEntity.get()))
+                                 : Optional.empty();
   }
 
 
@@ -174,7 +186,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * .MultiValueMap)
    */
   @Override
-  public QueryResults<P> findByQuery(MultiValueMap<String, String> parameterMap) throws Exception
+  public QueryResults<P> findByQuery(
+    MultiValueMap<String, String> parameterMap) throws Exception
   {
     JpqlQuery<E> query = getQuery(parameterMap);
 
@@ -189,7 +202,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * org.drdeesw.commons.services.CrudService#findByQuery(org.drdeesw.commons.dto.
    * queries.JpqlQuery)
    */
-  public <Q extends JpqlQuery<P>> QueryResults<P> findByQuery(Q query) throws Exception
+  public <Q extends JpqlQuery<P>> QueryResults<P> findByQuery(
+    Q query) throws Exception
   {
     JpqlQuery<E> entityQuery = new JpqlQuery<E>(this.entityClass, query);
 
@@ -203,7 +217,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @see org.drdeesw.commons.services.CrudService#get(java.io.Serializable)
    */
   @Override
-  public P get(ID id)
+  public P get(
+    ID id)
   {
     E entity = this.repository.getReferenceById(id);
 
@@ -217,12 +232,26 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @see org.drdeesw.commons.services.CrudService#get(java.util.Set)
    */
   @Override
-  public QueryResults<P> get(Set<ID> ids) throws Exception
+  public QueryResults<P> get(
+    Set<ID> ids) throws Exception
   {
-    JpqlQuery<E> query = new JpqlQuery<E>(this.entityClass)//
-        .in("id", ids);
+    QueryResults<P> queryResults = null;
 
-    return findByEntityQuery(query);
+    if (ids != null && !ids.isEmpty())
+    {
+      JpqlQuery<E> query = new JpqlQuery<E>(this.entityClass)//
+          .in("id", ids);
+
+      queryResults = findByEntityQuery(query);
+    }
+    else
+    {
+      List<P> list = new ArrayList<>();
+
+      queryResults = new QueryResults<P>(list);
+    }
+
+    return queryResults;
   }
 
 
@@ -232,10 +261,11 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @throws Exception
    */
   @Override
-  public Map<ID, P> getMap(Set<ID> ids) throws Exception
+  public Map<ID, P> getMap(
+    Set<ID> ids) throws Exception
   {
+    Map<ID, P> map = new HashMap<>();
     QueryResults<P> queryResults = get(ids);
-    Map<ID, P>      map          = new HashMap<>();
 
     queryResults.forEach(result -> map.put(result.getId(), result));
 
@@ -248,7 +278,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @return
    * @throws Exception
    */
-  private JpqlQuery<E> getQuery(MultiValueMap<String, String> parameterMap) throws Exception
+  private JpqlQuery<E> getQuery(
+    MultiValueMap<String, String> parameterMap) throws Exception
   {
     return new DataTablesJpqlQuery<E>(this.entityClass, parameterMap);
   }
@@ -258,10 +289,11 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @param <R>
    * @param repository
    */
-  protected <R extends JpaRepository<E, ID> & QueryRepository<E, ID>> void init(R repository)
+  protected <R extends JpaRepository<E, ID> & QueryRepository<E, ID>> void init(
+    R repository)
   {
     this.queryRepository = repository;
-    this.repository      = repository;
+    this.repository = repository;
   }
 
 
@@ -273,7 +305,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * UniqueObject)
    */
   @Override
-  public P save(P obj)
+  public P save(
+    P obj)
   {
     E entity = convertPojoToEntity(obj);
 
@@ -287,7 +320,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @see org.drdeesw.commons.services.CrudService#saveAll(java.util.Collection)
    */
   @Override
-  public List<P> saveAll(Collection<P> pojos)
+  public List<P> saveAll(
+    Collection<P> pojos)
   {
     List<E> entities = convertPojoToEntity(pojos);
 
@@ -302,7 +336,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * Collection)
    */
   @Override
-  public List<P> saveAllAndFlush(Collection<P> pojos)
+  public List<P> saveAllAndFlush(
+    Collection<P> pojos)
   {
     List<E> entities = convertPojoToEntity(pojos);
 
@@ -318,7 +353,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * UniqueObject)
    */
   @Override
-  public P saveAndFlush(P obj)
+  public P saveAndFlush(
+    P obj)
   {
     E entity = convertPojoToEntity(obj);
 
@@ -334,7 +370,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * UniqueObject)
    */
   @Override
-  public P update(P obj)
+  public P update(
+    P obj)
   {
     E entity = convertPojoToEntity(obj);
 
@@ -346,7 +383,8 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniqueObject<ID>, E e
    * @param entity
    * @return
    */
-  protected P updateEntity(E entity)
+  protected P updateEntity(
+    E entity)
   {
     return convertEntityToPojo(this.repository.save(entity));
   }

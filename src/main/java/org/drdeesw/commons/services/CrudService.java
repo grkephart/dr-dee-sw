@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.drdeesw.commons.dto.base.UniqueObject;
+import org.drdeesw.commons.dto.pojos.UniquePojo;
 import org.drdeesw.commons.dto.queries.JpqlQuery;
 import org.drdeesw.commons.dto.queries.QueryResults;
 import org.springframework.util.MultiValueMap;
@@ -24,7 +24,7 @@ import org.springframework.util.MultiValueMap;
  * @param <P> the POJO class
  * @param <ID> the ID class of the POJO
  */
-public interface CrudService<P extends UniqueObject<ID>, ID extends Serializable>
+public interface CrudService<P extends UniquePojo<ID>, ID extends Serializable>
     extends BusinessService
 {
   /**

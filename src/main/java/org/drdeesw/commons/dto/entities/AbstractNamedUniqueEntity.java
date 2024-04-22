@@ -21,7 +21,7 @@ import org.drdeesw.commons.dto.base.NamedUniqueObject;
 @MappedSuperclass
 @Access(value = AccessType.FIELD)
 public abstract class AbstractNamedUniqueEntity<ID extends Serializable> extends
-    AbstractUniqueEntity<ID> implements Comparable<NamedObject>, NamedUniqueObject<ID>
+    AbstractUniqueEntity<ID> implements Comparable<NamedObject>, NamedUniqueObject<ID>, UniqueEntity<ID>
 {
   private static final long serialVersionUID = -6603247573392458671L;
   @Column(name="name")

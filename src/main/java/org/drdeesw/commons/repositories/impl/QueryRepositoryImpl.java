@@ -35,7 +35,7 @@ public class QueryRepositoryImpl<T extends UniqueObject<ID>, ID extends Serializ
   @Override
   @Transactional
   @SuppressWarnings("unchecked")
-  public <Q extends JpqlQuery<T>>QueryResults<T> advancedSearch(
+  public <Q extends JpqlQuery<T>>QueryResults<T> findByQuery(
      Q query) throws Exception
   {
     try

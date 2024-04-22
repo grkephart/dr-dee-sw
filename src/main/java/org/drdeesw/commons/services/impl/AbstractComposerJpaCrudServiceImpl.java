@@ -6,7 +6,6 @@ package org.drdeesw.commons.services.impl;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -79,48 +78,16 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
    * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#convertEntityToPojo(org.drdeesw.commons.dto.base.UniqueObject)
    */
   @Override
-  protected P convertEntityToPojo(
-    E entity)
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  protected abstract P convertEntityToPojo(
+    E entity);
 
 
   /* (non-Javadoc)
    * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#convertPojoToEntity(org.drdeesw.commons.dto.base.UniqueObject)
    */
   @Override
-  protected E convertPojoToEntity(
-    P pojo)
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#create(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  public P create(
-    P obj)
-  {
-    // TODO Auto-generated method stub
-    return super.create(obj);
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#delete(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  public void delete(
-    P obj)
-  {
-    // TODO Auto-generated method stub
-    super.delete(obj);
-  }
+  protected abstract E convertPojoToEntity(
+    P pojo);
 
 
   /* (non-Javadoc)
@@ -211,75 +178,4 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
     return map;
   }
 
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#save(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  public P save(
-    P obj)
-  {
-    // TODO Auto-generated method stub
-    return super.save(obj);
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#saveAll(java.util.Collection)
-   */
-  @Override
-  public List<P> saveAll(
-    Collection<P> pojos)
-  {
-    // TODO Auto-generated method stub
-    return super.saveAll(pojos);
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#saveAllAndFlush(java.util.Collection)
-   */
-  @Override
-  public List<P> saveAllAndFlush(
-    Collection<P> pojos)
-  {
-    // TODO Auto-generated method stub
-    return super.saveAllAndFlush(pojos);
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#saveAndFlush(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  public P saveAndFlush(
-    P obj)
-  {
-    // TODO Auto-generated method stub
-    return super.saveAndFlush(obj);
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#update(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  public P update(
-    P obj)
-  {
-    // TODO Auto-generated method stub
-    return super.update(obj);
-  }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#updateEntity(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  protected P updateEntity(
-    E entity)
-  {
-    // TODO Auto-generated method stub
-    return super.updateEntity(entity);
-  }
 }

@@ -26,6 +26,28 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
    * Defaults to MATCH_ANY.
    * 
    * @param clazz
+   * @throws Exception
+   */
+  public DataTablesJpqlQuery(Class<T> clazz)
+  {
+    super(clazz, Match.MATCH_ANY);
+  }
+
+  /**
+   * 
+   * @param clazz
+   * @param match
+   * @throws Exception
+   */
+  public DataTablesJpqlQuery(Class<T> clazz, Match match)
+  {
+    super(clazz, match);
+  }
+
+  /**
+   * Defaults to MATCH_ANY.
+   * 
+   * @param clazz
    * @param model
    * @throws Exception
    */
