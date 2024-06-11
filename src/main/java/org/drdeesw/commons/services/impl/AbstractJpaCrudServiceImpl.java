@@ -20,6 +20,7 @@ import org.drdeesw.commons.dto.queries.QueryResults;
 import org.drdeesw.commons.dto.queries.datatables.DataTablesJpqlQuery;
 import org.drdeesw.commons.repositories.QueryRepository;
 import org.drdeesw.commons.services.CrudService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.util.MultiValueMap;
 
@@ -36,15 +37,19 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
     extends AbstractService implements CrudService<P, ID>
 {
   private Class<E>               entityClass;
+  private ModelMapper            modelMapper;
+  private Class<P>               pojoClass;
   private QueryRepository<E, ID> queryRepository;
   private JpaRepository<E, ID>   repository;
 
   /**
    * @param clazz
    */
-  protected AbstractJpaCrudServiceImpl(Class<E> clazz)
+  protected AbstractJpaCrudServiceImpl(Class<P> pojoClass, Class<E> entityClass)
   {
-    this.entityClass = clazz;
+    this.entityClass = entityClass;
+    this.modelMapper = new ModelMapper();
+    this.pojoClass = pojoClass;
   }
 
 
@@ -67,8 +72,11 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
    * @param entity
    * @return
    */
-  protected abstract P convertEntityToPojo(
-    E entity);
+  protected P convertEntityToPojo(
+    E entity)
+  {
+    return this.modelMapper.map(entity, this.pojoClass);
+  }
 
 
   /**
@@ -109,8 +117,11 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
    * @param pojo
    * @return
    */
-  protected abstract E convertPojoToEntity(
-    P pojo);
+  protected E convertPojoToEntity(
+    P pojo)
+  {
+    return this.modelMapper.map(pojo, this.entityClass);
+  }
 
 
   /*
@@ -406,6 +417,15 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
     E entity)
   {
     return convertEntityToPojo(this.repository.save(entity));
+  }
+
+
+  /**
+   * @return the modelMapper
+   */
+  protected ModelMapper getModelMapper()
+  {
+    return modelMapper;
   }
 
 }

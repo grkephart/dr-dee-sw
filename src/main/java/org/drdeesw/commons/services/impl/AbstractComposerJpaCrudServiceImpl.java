@@ -29,13 +29,12 @@ import org.springframework.util.MultiValueMap;
 public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID>, E extends UniqueEntity<ID>, ID extends Serializable>
     extends AbstractJpaCrudServiceImpl<P, E, ID> implements ComposerCrudService<P, ID>
 {
-
   /**
    * @param clazz
    */
-  protected AbstractComposerJpaCrudServiceImpl(Class<E> clazz)
+  protected AbstractComposerJpaCrudServiceImpl(Class<P> pojoClass, Class<E> entityClass)
   {
-    super(clazz);
+    super(pojoClass, entityClass);
   }
 
 
@@ -73,22 +72,6 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
 
     return queryResults;
   }
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#convertEntityToPojo(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  protected abstract P convertEntityToPojo(
-    E entity);
-
-
-  /* (non-Javadoc)
-   * @see org.drdeesw.commons.services.impl.AbstractJpaCrudServiceImpl#convertPojoToEntity(org.drdeesw.commons.dto.base.UniqueObject)
-   */
-  @Override
-  protected abstract E convertPojoToEntity(
-    P pojo);
 
 
   /* (non-Javadoc)
