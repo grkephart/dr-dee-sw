@@ -62,10 +62,9 @@ public abstract class AbstractCrudController<P extends UniquePojo<ID>, ID extend
   /**
    * @param parameterMap
    * @return
-   * @throws Exception
    */
   protected QueryResults<P> findByQuery(
-    MultiValueMap<String, String> parameterMap) throws Exception
+    MultiValueMap<String, String> parameterMap)
   {
     try
     {
@@ -83,10 +82,9 @@ public abstract class AbstractCrudController<P extends UniquePojo<ID>, ID extend
    * @param <Q>
    * @param query
    * @return
-   * @throws Exception 
    */
   protected <Q extends JpqlQuery<P>> QueryResults<P> findByQuery(
-    Q query) throws Exception
+    Q query)
   {
     return this.crudService.findByQuery(query);
   }

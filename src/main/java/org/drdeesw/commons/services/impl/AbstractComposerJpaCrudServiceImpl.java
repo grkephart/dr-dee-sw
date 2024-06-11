@@ -45,10 +45,9 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
    * 
    * @param values
    * @return
-   * @throws Exception 
    */
   protected abstract Collection<P> compose(
-    Collection<P> values) throws Exception;
+    Collection<P> values);
 
 
   /**
@@ -63,12 +62,14 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
   /**
    * @param queryResults
    * @return
-   * @throws Exception 
    */
   protected QueryResults<P> compose(
-    QueryResults<P> queryResults) throws Exception
+    QueryResults<P> queryResults)
   {
-    compose(queryResults.getRecords());
+    if (super.isNotEmpty(queryResults.getRecords()))
+    {
+      compose(queryResults.getRecords());
+    }
 
     return queryResults;
   }
@@ -111,7 +112,7 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
    */
   @Override
   public QueryResults<P> findByQuery(
-    MultiValueMap<String, String> parameterMap) throws Exception
+    MultiValueMap<String, String> parameterMap)
   {
     final QueryResults<P> queryResults = super.findByQuery(parameterMap);
 
@@ -126,7 +127,7 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
    */
   @Override
   public <Q extends JpqlQuery<P>> QueryResults<P> findByQuery(
-    Q query) throws Exception
+    Q query)
   {
     final QueryResults<P> queryResults = super.findByQuery(query);
 
@@ -154,7 +155,7 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
    */
   @Override
   public QueryResults<P> get(
-    Set<ID> ids) throws Exception
+    Set<ID> ids)
   {
     final QueryResults<P> queryResults = super.get(ids);
 
@@ -169,11 +170,14 @@ public abstract class AbstractComposerJpaCrudServiceImpl<P extends UniquePojo<ID
    */
   @Override
   public Map<ID, P> getMap(
-    Set<ID> ids) throws Exception
+    Set<ID> ids)
   {
     final Map<ID, P> map = super.getMap(ids);
 
-    compose(map.values());
+    if (super.isNotEmpty(map))
+    {
+      compose(map.values());
+    }
 
     return map;
   }

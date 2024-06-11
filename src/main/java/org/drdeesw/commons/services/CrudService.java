@@ -54,19 +54,17 @@ public interface CrudService<P extends UniquePojo<ID>, ID extends Serializable>
   /**
    * @param parameterMap
    * @return
-   * @throws Exception
    */
   QueryResults<P> findByQuery(
-    MultiValueMap<String, String> parameterMap) throws Exception;
+    MultiValueMap<String, String> parameterMap);
 
 
   /**
    * @param query
    * @return
-   * @throws Exception 
    */
   <Q extends JpqlQuery<P>> QueryResults<P> findByQuery(
-    Q query) throws Exception;
+    Q query);
 
 
   /**
@@ -80,19 +78,17 @@ public interface CrudService<P extends UniquePojo<ID>, ID extends Serializable>
   /**
    * @param ids
    * @return
-   * @throws Exception 
    */
   QueryResults<P> get(
-    Set<ID> ids) throws Exception;
+    Set<ID> ids);
 
 
   /**
    * @param ids
    * @return
-   * @throws Exception
    */
   Map<ID, P> getMap(
-    Set<ID> ids) throws Exception;
+    Set<ID> ids);
 
 
   /**

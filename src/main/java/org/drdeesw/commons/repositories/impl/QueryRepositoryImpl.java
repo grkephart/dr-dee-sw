@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import org.drdeesw.commons.dto.base.UniqueObject;
@@ -35,40 +34,33 @@ public class QueryRepositoryImpl<T extends UniqueObject<ID>, ID extends Serializ
   @Override
   @Transactional
   @SuppressWarnings("unchecked")
-  public <Q extends JpqlQuery<T>>QueryResults<T> findByQuery(
-     Q query) throws Exception
+  public <Q extends JpqlQuery<T>> QueryResults<T> findByQuery(
+    Q query)
   {
-    try
+    List<T> resultList = null;
+    int totalRecords = 0;
+
+    if (query.isPerformCount())
     {
-      List<T> resultList = null;
-      int totalRecords = -1;
+      javax.persistence.Query cq = this.em.createQuery(query.toCountJpql());
+      Object singleResult = cq.getSingleResult();
 
-      if (query.isPerformCount())
-      {
-        javax.persistence.Query cq = this.em.createQuery(query.toCountJpql());
-        Object singleResult = cq.getSingleResult();
-
-        totalRecords = ((Long)singleResult).intValue();
-      }
-
-      if (totalRecords > 0 || !query.isPerformCount())
-      {
-        String jpql = query.toJpql();
-        javax.persistence.Query q = this.em.createQuery(jpql);
-
-        q.setFirstResult(query.getStart(0))//
-            .setMaxResults(query.getMaxResults(1000));
-
-        resultList = q.getResultList(); // SuppressWarnings("unchecked")
-      }
-      else
-        resultList = new ArrayList<T>();
-
-      return new QueryResults<T>(resultList, totalRecords, query);
+      totalRecords = ((Long)singleResult).intValue();
     }
-    catch (PersistenceException e)
+
+    if (totalRecords > 0 || !query.isPerformCount())
     {
-      throw new Exception(e);
+      String jpql = query.toJpql();
+      javax.persistence.Query q = this.em.createQuery(jpql);
+
+      q.setFirstResult(query.getStart(0))//
+          .setMaxResults(query.getMaxResults(1000));
+
+      resultList = q.getResultList(); // SuppressWarnings("unchecked")
     }
+    else
+      resultList = new ArrayList<T>();
+
+    return new QueryResults<T>(resultList, totalRecords, query);
   }
 }

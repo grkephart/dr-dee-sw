@@ -26,7 +26,6 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
    * Defaults to MATCH_ANY.
    * 
    * @param clazz
-   * @throws Exception
    */
   public DataTablesJpqlQuery(Class<T> clazz)
   {
@@ -37,7 +36,6 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
    * 
    * @param clazz
    * @param match
-   * @throws Exception
    */
   public DataTablesJpqlQuery(Class<T> clazz, Match match)
   {
@@ -49,9 +47,8 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
    * 
    * @param clazz
    * @param model
-   * @throws Exception
    */
-  public DataTablesJpqlQuery(Class<T> clazz, JQueryDataTableParamModel model) throws Exception
+  public DataTablesJpqlQuery(Class<T> clazz, JQueryDataTableParamModel model)
   {
     this(clazz, model, Match.MATCH_ANY);
   }
@@ -61,10 +58,8 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
    * @param clazz
    * @param model
    * @param match
-   * @throws Exception
    */
   public DataTablesJpqlQuery(Class<T> clazz, JQueryDataTableParamModel model, Match match)
-      throws Exception
   {
     super(clazz, match);
     String searchValue = model.getSearchValue();
@@ -167,10 +162,8 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
   /**
    * @param clazz
    * @param allRequestParams
-   * @throws Exception
    */
   public DataTablesJpqlQuery(Class<T> clazz, MultiValueMap<String, String> allRequestParams)
-      throws Exception
   {
     this(clazz, DataTablesParamUtility.getParamModel(allRequestParams));
   }
@@ -180,10 +173,8 @@ public class DataTablesJpqlQuery<T> extends JpqlQuery<T>
    * @param clazz
    * @param allRequestParams
    * @param match
-   * @throws Exception
    */
   public DataTablesJpqlQuery(Class<T> clazz, MultiValueMap<String, String> allRequestParams, Match match)
-      throws Exception
   {
     this(clazz, DataTablesParamUtility.getParamModel(allRequestParams), match);
   }

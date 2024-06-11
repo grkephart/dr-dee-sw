@@ -79,7 +79,7 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
     QueryResults<E> entityQueryResults)
   {
     QueryResults<P> queryResults = new QueryResults<P>(entityQueryResults.getDraw(),
-        entityQueryResults.getSize());
+        entityQueryResults.getSize(), entityQueryResults.getRecordsTotal());
 
     entityQueryResults.forEach(entity -> queryResults.add(convertEntityToPojo(entity)));
 
@@ -151,10 +151,9 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
    * @param <Q>
    * @param query
    * @return
-   * @throws Exception
    */
   private <Q extends JpqlQuery<E>> QueryResults<P> findByEntityQuery(
-    Q query) throws Exception
+    Q query)
   {
     QueryResults<E> queryResults = this.queryRepository.findByQuery(query);
 
@@ -187,7 +186,7 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
    */
   @Override
   public QueryResults<P> findByQuery(
-    MultiValueMap<String, String> parameterMap) throws Exception
+    MultiValueMap<String, String> parameterMap)
   {
     JpqlQuery<E> query = getQuery(parameterMap);
 
@@ -203,7 +202,7 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
    * queries.JpqlQuery)
    */
   public <Q extends JpqlQuery<P>> QueryResults<P> findByQuery(
-    Q query) throws Exception
+    Q query)
   {
     JpqlQuery<E> entityQuery = new JpqlQuery<E>(this.entityClass, query);
 
@@ -233,11 +232,11 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
    */
   @Override
   public QueryResults<P> get(
-    Set<ID> ids) throws Exception
+    Set<ID> ids)
   {
     QueryResults<P> queryResults = null;
 
-    if (ids != null && !ids.isEmpty())
+    if (isNotEmpty(ids))
     {
       JpqlQuery<E> query = new JpqlQuery<E>(this.entityClass)//
           .in("id", ids);
@@ -258,11 +257,10 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
   /**
    * @param ids
    * @return
-   * @throws Exception
    */
   @Override
   public Map<ID, P> getMap(
-    Set<ID> ids) throws Exception
+    Set<ID> ids)
   {
     Map<ID, P> map = new HashMap<>();
     QueryResults<P> queryResults = get(ids);
@@ -276,10 +274,9 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
   /**
    * @param parameterMap
    * @return
-   * @throws Exception
    */
   private JpqlQuery<E> getQuery(
-    MultiValueMap<String, String> parameterMap) throws Exception
+    MultiValueMap<String, String> parameterMap)
   {
     return new DataTablesJpqlQuery<E>(this.entityClass, parameterMap);
   }
@@ -294,6 +291,28 @@ public abstract class AbstractJpaCrudServiceImpl<P extends UniquePojo<ID>, E ext
   {
     this.queryRepository = repository;
     this.repository = repository;
+  }
+
+
+  /**
+   * @param ids
+   * @return
+   */
+  protected boolean isNotEmpty(
+    Collection<?> ids)
+  {
+    return ids != null && !ids.isEmpty();
+  }
+
+
+  /**
+   * @param map
+   * @return
+   */
+  public boolean isNotEmpty(
+    Map<?, ?> map)
+  {
+    return map != null && !map.isEmpty();
   }
 
 

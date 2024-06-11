@@ -123,10 +123,10 @@ public class QueryResults<T> implements Iterable<T>
    * @param draw
    * @param totalRecords
    */
-  public QueryResults(Integer draw, int totalRecords)
+  public QueryResults(Integer draw, int size, int totalRecords)
   {
     this.draw = draw;
-    this.records = new ArrayList<T>(totalRecords);
+    this.records = new ArrayList<T>(size);
     this.query = null;
     this.totalRecords = totalRecords;
   }

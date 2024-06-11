@@ -64,11 +64,15 @@ public class Query<T>
   public <PQ extends JpqlQuery<?>> Query(Class<T> entityClass, PQ that)
   {
     this.alias = that.getAlias();
+    this.caseInsensitive = that.isCaseInsensitive();
     this.clazz = entityClass;
     this.conditions = new ArrayList<Condition>(that.getConditions());
     this.mandatoryConditions = new ArrayList<Condition>(that.getMandatoryConditions());
     this.match = that.getMatch();
+    this.maxResults = that.getMaxResults();
     this.orderings = new ArrayList<>(that.getOrderings());
+    this.performCount = that.isPerformCount();
+    this.start = that.getStart();
   }
 
 
@@ -97,11 +101,10 @@ public class Query<T>
    * @param propertyName
    * @param value
    * @return
-   * @throws ApplicationException
    */
   public <Q extends Query<T>> Q addMandatoryCondition(
     String propertyName,
-    Object value) throws Exception
+    Object value)
   {
     if (propertyName != null && value != null)
     {
@@ -117,7 +120,7 @@ public class Query<T>
       boolean added = addMandatoryCondition(propertyName, operator, value, false);
 
       if (!added)
-        throw new Exception("mandatory condition not added: " + propertyName + " = " + value);
+        throw new RuntimeException("mandatory condition not added: " + propertyName + " = " + value);
     }
 
     return cast();
@@ -129,17 +132,16 @@ public class Query<T>
    * @param operator
    * @param value
    * @return
-   * @throws Exception 
    */
   public <Q extends Query<T>> Q addMandatoryCondition(
     String propertyName,
     Operator operator,
-    Object value) throws Exception
+    Object value)
   {
     boolean added = addMandatoryCondition(propertyName, operator, value, false);
 
     if (!added)
-      throw new Exception("mandatory condition not added: " + propertyName + " = " + value);
+      throw new RuntimeException("mandatory condition not added: " + propertyName + " = " + value);
 
     return cast();
   }
@@ -176,6 +178,11 @@ public class Query<T>
   }
 
 
+  /**
+   * @param <Q>
+   * @param conditions
+   * @return
+   */
   public <Q extends Query<T>> Q and(
     Condition... conditions)
   {
