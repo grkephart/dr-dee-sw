@@ -4,8 +4,6 @@
 package org.drdeesw.commons.security.config.oauth2.client;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration.Builder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -27,15 +25,11 @@ public enum UncommonOAuth2Provider {
       String redirectUri = DEFAULT_REDIRECT_URL.replace("{action}", "login");
       ClientRegistration.Builder builder = getBuilder(registrationId,
         ClientAuthenticationMethod.CLIENT_SECRET_BASIC, redirectUri)//
-
-            .scope(CB_SCOPE)//
             .authorizationUri(CB_AUTHORIZATION_URI)//
             .tokenUri(CB_TOKEN_URI)//
             .userInfoUri(CB_USER_INFO_URI)//
             .userNameAttributeName(CB_USER_NAME_ATTRIBUTE_NAME)//
             .clientName(CB_CLIENT_NAME);
-
-      log.info("[getBuilder] Redirect URI: '" + redirectUri + "'");
 
       return builder;
     }
@@ -44,13 +38,10 @@ public enum UncommonOAuth2Provider {
 
   private static final String CB_AUTHORIZATION_URI        = "https://login.coinbase.com/oauth2/auth";
   private static final String CB_CLIENT_NAME              = "Coinbase";
-  private static final String CB_SCOPE                    = "wallet:user:read";
   private static final String CB_TOKEN_URI                = "https://login.coinbase.com/oauth2/token";
   private static final String CB_USER_INFO_URI            = "https://api.coinbase.com/v2/user";
-  private static final String CB_USER_NAME_ATTRIBUTE_NAME = "username";
+  private static final String CB_USER_NAME_ATTRIBUTE_NAME = "name";
   private static final String DEFAULT_REDIRECT_URL        = "{baseUrl}/{action}/oauth2/code/{registrationId}";
-  private static final Log    log                         = LogFactory
-      .getLog(UncommonOAuth2Provider.class);
 
   /**
    * Create a new

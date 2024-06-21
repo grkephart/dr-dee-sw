@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.drdeesw.commons.security.config.oauth2.client.UncommonOAuth2Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +21,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 
 /**
@@ -34,9 +36,9 @@ public abstract class Oauth2SecurityConfiguration
   private static final String   CLIENTS_KEY         = "security.oauth2.client.registration.clients";
   protected static final String COINBASE_CLIENT     = "coinbase";
   protected static final String FACEBOOK_CLIENT     = "facebook";
-  protected static final String GITHUB_CLIENT       = "github";
+  protected static final Object GITHUB_CLIENT       = "github";
   protected static final String GOOGLE_CLIENT       = "google";
-  protected static final String OKTA_CLIENT         = "okta";
+  protected static final Object OKTA_CLIENT         = "okta";
   @Autowired
   private Environment           env;
 
@@ -90,6 +92,27 @@ public abstract class Oauth2SecurityConfiguration
 
 
   /**
+   * @return
+   */
+  public String getAccessToken(
+    HttpServletRequest request)
+  {
+    return null; // TODO
+  }
+
+
+  /**
+   * Returns the bearer token with "Bearer " prefixed.
+   * 
+   * @return the bearer token with "Bearer " prefixed
+   */
+  public String getPrefixedSessionBearerToken()
+  {
+    return "Bearer " + getSessionBearerToken();
+  }
+
+
+  /**
    * Returns the registration for the given client.
    * 
    * @param client "coinbase" or "google", etc.
@@ -106,13 +129,15 @@ public abstract class Oauth2SecurityConfiguration
     }
 
     String clientSecret = env.getProperty(CLIENT_PROPERTY_KEY + client + CLIENT_SECRET);
+    String clientScope = env.getProperty(CLIENT_PROPERTY_KEY + client + CLIENT_SCOPE);
+    String[] clientScopes = clientScope.split(",");
 
     if (client.equals(GOOGLE_CLIENT))
     {
       return CommonOAuth2Provider.GOOGLE.getBuilder(client)//
           .clientId(clientId)//
           .clientSecret(clientSecret)//
-          .scope(CLIENT_SCOPE)//
+          .scope(clientScopes)//
           .build();
     }
     else if (client.equals(GITHUB_CLIENT))
@@ -141,10 +166,23 @@ public abstract class Oauth2SecurityConfiguration
       return UncommonOAuth2Provider.COINBASE.getBuilder(client)//
           .clientId(clientId)//
           .clientSecret(clientSecret)//
+          .scope(clientScopes)//
           .build();
     }
     else
-      return null;
+      return getCustomClientRegistration(
+        client);
+  }
+
+
+  /**
+   * @param client
+   * @return
+   */
+  protected ClientRegistration getCustomClientRegistration(
+    String client)
+  {
+    return null;
   }
 
 
@@ -165,13 +203,14 @@ public abstract class Oauth2SecurityConfiguration
       OAuth2AuthorizedClient client = authorizedClientService()
           .loadAuthorizedClient(clientRegistrationId, principalName);
 
-      DefaultOAuth2User x;
-      
-      //      log.info("[getSessionBearerToken] principal class="
-      //               + oauthToken.getPrincipal().getClass().getSimpleName() + ", principalName="
-      //               + principalName);
+      if (client != null)
+      {
+        OAuth2AccessToken accessToken = client.getAccessToken();
 
-      return client == null ? null : client.getAccessToken().getTokenValue();
+        return accessToken.getTokenValue();
+      }
+      else
+        return null;
     }
     else
       return null;
